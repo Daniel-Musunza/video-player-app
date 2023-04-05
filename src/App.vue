@@ -1,7 +1,7 @@
 <template>
   <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <router-link to="/">Play Video</router-link> |
+    <router-link to="/videos">Video List</router-link>
   </nav>
   <router-view/>
 </template>
@@ -13,10 +13,15 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  display: flex;
+
+  justify-content: center;
 }
 
 nav {
   padding: 30px;
+  display: flex;
+  flex-direction: column;
 }
 
 nav a {
