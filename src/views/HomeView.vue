@@ -1,5 +1,6 @@
 <template>
-    <div class="home-view">
+  <div class="home-view">
+    <!-- Video player -->
     <div class="video-player">
       <video ref="video" class="video" v-if="currentVideo" :src="currentVideo.url" controls></video>
       <div class="controls">
@@ -11,6 +12,7 @@
         <div class="time">{{ currentTime }} / {{ duration }}</div>
       </div>
     </div>
+    <!-- Video list -->
     <div class="video-list">
       <div v-for="video in videoList" :key="video.url" class="video-item" @click.prevent="playVideo(video)">
         <div class="thumbnail" :style="{ backgroundImage: 'url(' + video.thumbnail + ')' }"></div>
@@ -20,46 +22,45 @@
         </div>
       </div>
     </div>
+    <!-- Add video form -->
     <div class="add-video">
       <input type="text" v-model.trim="title" placeholder="Title">
-      <!-- <input type="text" v-model.trim="url" placeholder="YouTube URL"> -->
       <input type="file" @change="handleFileUpload">
       <button @click.prevent="addVideo">Add Video</button>
     </div>
   </div>
 </template>
-
 <script>
-// @ is an alias to /src
 export default {
   name: 'HomeView',
   computed: {
+    // Get the current video and video list from Vuex store
     currentVideo() {
       return this.$store.state.currentVideo
     },
     videoList() {
       return this.$store.state.videoList
     },
+    // Compute the progress, current time, and duration of the video player
     progress() {
       if (!this.$refs.video) return 0
       const { currentTime, duration } = this.$refs.video
       return (currentTime / duration) * 100
     },
     currentTime() {
-    if (!this.$refs.video) return '0:00'
-    const { currentTime } = this.$refs.video
-    const minutes = Math.floor(currentTime / 60)
-    const seconds = Math.floor(currentTime % 60)
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`
-  },
-  duration() {
-    if (!this.$refs.video) return '0:00'
-    const { duration } = this.$refs.video
-    const minutes = Math.floor(duration / 60)
-    const seconds = Math.floor(duration % 60)
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`
-  }
-
+      if (!this.$refs.video) return '0:00'
+      const { currentTime } = this.$refs.video
+      const minutes = Math.floor(currentTime / 60)
+      const seconds = Math.floor(currentTime % 60)
+      return `${minutes}:${seconds.toString().padStart(2, '0')}`
+    },
+    duration() {
+      if (!this.$refs.video) return '0:00'
+      const { duration } = this.$refs.video
+      const minutes = Math.floor(duration / 60)
+      const seconds = Math.floor(duration % 60)
+      return `${minutes}:${seconds.toString().padStart(2, '0')}`
+    }
   },
   methods: {
     handleFileUpload(event) {
