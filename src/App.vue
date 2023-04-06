@@ -1,8 +1,8 @@
 <template>
-  <nav>
+  <!-- <nav>
     <router-link to="/">Play Video</router-link> |
-    <router-link to="/videos">Video List</router-link>
-  </nav>
+    
+  </nav> -->
   <router-view/>
 </template>
 

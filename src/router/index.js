@@ -7,16 +7,7 @@ const routes = [
     name: 'home',
     component: HomeView
   },
-  {
-    path: '/videos',
-    name: 'videos',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: function () {
-      return import(/* webpackChunkName: "about" */ '../views/VideoList.vue')
-    }
-  }
+ 
 ]
 
 const router = createRouter({

@@ -62,46 +62,70 @@ export default {
       return `${minutes}:${seconds.toString().padStart(2, '0')}`
     }
   },
-  methods: {
-    handleFileUpload(event) {
-    this.file = event.target.files[0]
-  },
-  addVideo() {
-    const video = {
-      title: this.title,
-      file: this.file,
-      thumbnail: URL.createObjectURL(this.file),
-      duration: '0:00'
-    }
-    this.$store.commit('setVideoList', [...this.videoList, video])
-    this.title = ''
-    this.file = null // reset the selected file after adding the video
-  },
+    // Defining various methods used in the component
+    methods: {
+      // Method to handle file upload on selecting a video file
+      handleFileUpload(event) {
+      // Set the selected file as the current file
+      this.file = event.target.files[0]
+      },
+      // Method to add a new video to the video list
+      addVideo() {
+        const video = {
+          title: this.title,
+          file: this.file,
+          thumbnail: URL.createObjectURL(this.file),
+          duration: '0:00'
+        }
+        this.$store.commit('setVideoList', [...this.videoList, video])
+        this.title = ''
+        this.file = null // reset the selected file after adding the video
+      },
+    // Method to play a video
     playVideo(video) {
+      // Check if a valid video is provided
       if (!video || !video.file instanceof Blob) return
+      // Set the current video as the provided video
       this.$store.commit('setCurrentVideo', video)
+      // Set the source of the video element to the video file URL
       this.$refs.video.src = URL.createObjectURL(video.file)
+      // Load the video element
       this.$refs.video.load()
+      // Play the video element
       this.$refs.video.play()
     },
+    // Method to seek to a specific time in the video
     seek(event) {
+      // Check if the video element exists
       if (!this.$refs.video) return
+      // Get the total duration of the video
       const { duration } = this.$refs.video
+      // Get the width of the progress bar
       const progressWidth = event.target.offsetWidth
+      // Get the x-coordinate of the click event
       const clickX = event.offsetX
+      // Calculate the percentage of the progress bar clicked
       const percent = clickX / progressWidth
+      // Set the current time of the video to the percentage of the total duration clicked
       this.$refs.video.currentTime = duration * percent
     },
+    // Method to extract the video ID from a YouTube video URL
     getVideoId(url) {
       const match = url.match(/youtube\.com\/watch\?v=(\w+)/) ||
                     url.match(/youtu\.be\/(\w+)/)
       return match ? match[1] : null
     },
+    // Method to update the duration of the current video
     updateVideoDuration() {
+      // Check if the video element exists
       if (!this.$refs.video) return
+      // Get the total duration of the video
       const { duration } = this.$refs.video
+      // Get the index of the current video in the video list
       const index = this.videoList.findIndex(video => video.url === this.currentVideo.url)
+      // Create a new video object with the updated duration
       const updatedVideo = { ...this.currentVideo, duration: this.formatDuration(duration) }
+      // Update the video list with the new video object
       this.$store.commit('updateVideoInList', { index, updatedVideo })
     },
     formatDuration(duration) {
@@ -126,8 +150,8 @@ export default {
 // },
 
     beforeUnmount() {
-      this.$refs.video.removeEventListener('loadedmetadata', this.updateVideoDuration)
-      this.$refs.video.removeEventListener('ended', this.videoEnded)
+      this.$refs.video.removeEventListener('loadedmetadata', this.updateVideoDuration);
+      this.$refs.video.removeEventListener('ended', this.videoEnded);
     }
   
 }
@@ -195,6 +219,7 @@ export default {
 }
 
 .video-item {
+  margin-top: 30px;
   margin-bottom: 20px;
   width: calc(33.33% - 10px);
   cursor: pointer;
