@@ -2,7 +2,7 @@
   <div class="home-view">
     <!-- Video player -->
     <div class="video-player">
-      <video ref="video" class="video" v-if="currentVideo" :src="currentVideo.url" controls></video>
+      <video ref="video" class="video" v-if="currentVideo" :src="currentVideo.url" autoplay controls></video>
       <div class="controls">
         <button class="play-btn" v-if="!$refs.video?.paused" @click.prevent="$refs.video?.pause()"></button>
         <button class="pause-btn" v-else @click.prevent="$refs.video?.play()"></button>
@@ -12,22 +12,24 @@
         <div class="time">{{ currentTime }} / {{ duration }}</div>
       </div>
     </div>
+        <!-- Add video form -->
+    <div class="add-video">
+      <input type="file" @change="handleFileUpload">
+      <button @click.prevent="addVideo">Add Video</button>
+    </div>
     <!-- Video list -->
     <div class="video-list">
       <div v-for="video in videoList" :key="video.url" class="video-item" @click.prevent="playVideo(video)">
-        <div class="thumbnail" :style="{ backgroundImage: 'url(' + video.thumbnail + ')' }"></div>
+        <div class="thumbnail">
+          <video :src="video.url" autoplay muted loop ></video></div>
         <div class="details">
           <div class="title">{{ video.title }}</div>
           <div class="duration">{{ video.duration }}</div>
         </div>
       </div>
     </div>
-    <!-- Add video form -->
-    <div class="add-video">
-      <input type="text" v-model.trim="title" placeholder="Title">
-      <input type="file" @change="handleFileUpload">
-      <button @click.prevent="addVideo">Add Video</button>
-    </div>
+
+
   </div>
 </template>
 <script>
@@ -62,39 +64,53 @@ export default {
       return `${minutes}:${seconds.toString().padStart(2, '0')}`
     }
   },
-    // Defining various methods used in the component
-    methods: {
-      // Method to handle file upload on selecting a video file
-      handleFileUpload(event) {
+  // Defining various methods used in the component
+  methods: {
+    // Method to handle file upload on selecting a video file
+    handleFileUpload(event) {
       // Set the selected file as the current file
       this.file = event.target.files[0]
-      },
-      // Method to add a new video to the video list
-      addVideo() {
-        const video = {
-          title: this.title,
-          file: this.file,
-          thumbnail: URL.createObjectURL(this.file),
-          duration: '0:00'
-        }
-        this.$store.commit('setVideoList', [...this.videoList, video])
-        this.title = ''
-        this.file = null // reset the selected file after adding the video
-      },
+    },
+    // Method to add a new video to the video list
+    addVideo() {
+      const video = {
+        title: this.file.name,
+        file: this.file,
+        url: URL.createObjectURL(this.file),
+        duration: '0:00'
+      }
+      this.$store.commit('setVideoList', [...this.videoList, video])
+      this.file = null // reset the selected file after adding the video
+    },
     // Method to play a video
     playVideo(video) {
       // Check if a valid video is provided
       if (!video || !video.file instanceof Blob) return
+
       // Set the current video as the provided video
       this.$store.commit('setCurrentVideo', video)
+
       // Set the source of the video element to the video file URL
       this.$refs.video.src = URL.createObjectURL(video.file)
+
       // Load the video element
       this.$refs.video.load()
+
       // Play the video element
       this.$refs.video.play()
-    },
-    // Method to seek to a specific time in the video
+
+      // Listen for 'ended' event on the video element
+      this.$refs.video.addEventListener('ended', () => {
+        // Get the index of the current video
+        const currentIndex = this.videos.findIndex(v => v === video)
+
+        // If there is a next video, play it
+        if (this.videos[currentIndex + 1]) {
+          this.playVideo(this.videos[currentIndex + 1])
+        }
+      })
+},
+
     seek(event) {
       // Check if the video element exists
       if (!this.$refs.video) return
@@ -215,21 +231,31 @@ export default {
 .video-list {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content:space-around;
+  max-width: 640px;
 }
 
 .video-item {
   margin-top: 30px;
   margin-bottom: 20px;
-  width: calc(33.33% - 10px);
+  width: calc(28% - 10px);
   cursor: pointer;
+  position: relative;
+ 
+  /* width: 200px;
+  height: 150px; */
+  /* display: flex; */
 }
 
 .thumbnail {
-  height: 0;
-  padding-bottom: 56.25%;
-  background-size: cover;
-  background-color:rgb(96, 96, 241);
+  border-radius: 50px;
+  position: relative;
+  /* width: 150px; */
+  height: 100px;
+  display: flex;
+
+justify-content:space-around;
+
 }
 
 .details {
