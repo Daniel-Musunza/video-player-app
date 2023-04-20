@@ -1,55 +1,97 @@
 <template>
-    <SideBar></SideBar>
+ 
 
-   
-    <div class="home-view container">
-      <Header></Header>
-      <!-- Video player -->
-      <div class="row">
-         <div class="col-8">
-            <div class="video-player">
-              <video ref="video" class="video" v-if="currentVideo" :src="currentVideo.url" autoplay controls></video>
-              <div class="controls">
-                <button class="play-btn" v-if="!$refs.video?.paused" @click.prevent="$refs.video?.pause()"></button>
-                <button class="pause-btn" v-else @click.prevent="$refs.video?.play()"></button>
-                <div class="progress-bar" @click="seek">
-                  <div class="progress" :style="{ width: progress + '%' }"></div>
-                </div>
-                <div class="time">{{ currentTime }} / {{ duration }}</div>
+<div class="main-content">
+  <header>
+        <div>
+          <h3>
+            <label for="nav-toggle">
+                <span><i class="fa-solid fa-bars"></i></span>
+            </label>
+          </h3>
+        </div>
+        <form>
+            <!-- <label for="arquivo"></label> -->
+            <input @change="handleFileUpload" class="inpdddut" name="arquivo" id="arquivo" type="file">
+            <input value="Add Video"  @click.prevent="addVideo" type="submit" class="inpdddut">
+          </form>
+          <div class="user-wrapper"  @click="toggleProfileMenu">
+         
+            <div class="profile">
+                <span style="font-size:20px; padding-left: 25px;">3,s</span>
+            </div>
+            <span class="down"><i class="fa-sharp fa-solid fa-angle-down"></i></span>
+          </div>
+          <div v-if="profileMenu " class="profile-menu">
+            <div class="info">
+              <div class="right">
+                <h4>MR THREE COMMAS </h4>
+                <small>Super admin</small>
+                <hr>
+                <br>
+               
+                <router-link to="/profile-view"><i class="fa-regular fa-user" ></i>View Profile</router-link>
+                
+                <hr>
+                <br>
+                <router-link  to="/"> <i class="fa-solid fa-user-group"></i>Switch Account</router-link>
+                
+                <hr>
+                <br>
+                
               </div>
             </div>
-                <!-- Add video form -->
-            <form>
-              <!-- <label for="arquivo"></label> -->
-              <input @change="handleFileUpload" class="inpdddut" name="arquivo" id="arquivo" type="file">
-              <input value="Add Video"  @click.prevent="addVideo" type="submit" class="inpdddut">
-            </form>
-        </div>
-
-          <!-- Video list -->
-          <div class="col-4">
-            <div v-for="video in videoList" :key="video.url" class="video-item" @click.prevent="playVideo(video)">
-              <div class="thumbnail">
-                <video :src="video.url" autoplay muted loop ></video></div>
-              <div class="details">
-                <div class="title">{{ video.title }}</div>
-                <div class="duration">{{ video.duration }}</div>
+          </div> 
+  </header>
+  <!-- Video player -->
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-9 col-md-6 col-lg-6 col-xl-10">
+        <div class="my-container d-flex flex-column">
+          <div class="video-player">
+            <video ref="video" class="video" v-if="currentVideo" :src="currentVideo.url" autoplay controls></video>
+            <div class="controls">
+              <button class="play-btn" v-if="!$refs.video?.paused" @click.prevent="$refs.video?.pause()"></button>
+              <button class="pause-btn" v-else @click.prevent="$refs.video?.play()"></button>
+              <div class="progress-bar" @click="seek">
+                <div class="progress" :style="{ width: progress + '%' }"></div>
               </div>
+              <div class="time">{{ currentTime }} / {{ duration }}</div>
             </div>
           </div>
+          <!-- Add video form -->
+     
+        </div>
       </div>
 
-
+      <!-- Video list -->
+      <div class="col-sm-3 col-md-6 col-lg-6 col-xl-2">
+        <div class="video-list">
+          <div v-for="video in videoList" :key="video.url" class="video-item" @click.prevent="playVideo(video)">
+            <div class="thumbnail">
+              <video :src="video.url" autoplay muted loop ></video>
+            </div>
+            <div class="details">
+              <div class="title">{{ video.title }}</div>
+             
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
+
+</div>
+
 </template>
 <script>
-import Header from '../views/Header.vue'
-import SideBar from '../views/SideBar.vue'
+
 export default {
   name: 'HomeView',
-  components: {
-    Header,
-    SideBar,
+  data(){
+    return {
+      profileMenu: null,
+    }
   },
   computed: {
     // Get the current video and video list from Vuex store
@@ -82,6 +124,9 @@ export default {
   },
   // Defining various methods used in the component
   methods: {
+    toggleProfileMenu(){
+      this.profileMenu=!this.profileMenu
+    },
     // Method to handle file upload on selecting a video file
     handleFileUpload(event) {
       // Set the selected file as the current file
@@ -160,7 +205,9 @@ export default {
 //     this.$refs.video.addEventListener('ended', this.videoEnded)
 //   })
 // },
-
+toggleProfileMenu() {
+this.profileMenu=!this.profileMenu;
+},
     beforeUnmount() {
       this.$refs.video.removeEventListener('loadedmetadata', this.updateVideoDuration);
       this.$refs.video.removeEventListener('ended', this.videoEnded);
@@ -173,21 +220,21 @@ export default {
 .my-container {
   display: flex;
   flex-direction: row;
-  margin-top: 90px;
-  padding: 20px;
-}
-.col-8 {
+  width: 750px;
   margin-left: 100px;
+  margin-right: 0dvh;
+}
+.row{
   display: flex;
-  flex-direction: column;
-  padding: 20px;
+  flex-direction: row;
+z-index: 0;
+  margin-top: 100px;
 }
 form {
-  max-width: 300px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #13121269;
+ 
   border-radius: 5px;
+  display: flex;
+  width: auto;
 }
 
 label {
@@ -207,11 +254,12 @@ label {
 }
 
 .inpdddut[type="submit"] {
-  padding: 10px 20px;
-  background-color: #1c7fe2;
-  color: #fff;
+  padding: 10px;
+  margin-bottom: 20px;
   border: none;
+  background-color: #a0faa5;
   border-radius: 5px;
+  width: 100px;
   cursor: pointer;
 }
 
@@ -220,24 +268,19 @@ label {
 }
     
 .video-player {
-  position: relative;
-  width: 800px;
-  height: 460px;
-  display: flex;
-
-
-  /* justify-content: center; */
-  /* border-radius: 50px; */
-  border-color: rgb(22, 21, 21);
-}
-.video {
-  width: 100%;
-  height: 100%;
-  /* margin-top: 50px; */
-  object-fit: cover;
-    border:1px solid #090909;
-    border-radius: 10px;
-}
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 aspect ratio */
+    margin-bottom: 20px;
+  }
+  .video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 .controls {
   position: absolute;
   bottom: -20px;
@@ -280,55 +323,68 @@ label {
 }
 
 /* Video List */
-.col-4 {
-  display: flex;
-  flex-wrap: wrap;
-  min-width: 640px;
-  flex-direction: column;
-}
+body, html {
+    overflow: hidden;
+  }
+  .video-list {
+    max-height: 80vh;
+    overflow-y: scroll;
 
-.video-item {
-  margin-top: 30px;
-  margin-bottom: 20px;
-  width: calc(28% - 10px);
-  cursor: pointer;
-  position: relative;
- 
-  /* width: 200px;
-  height: 150px; */
-  /* display: flex; */
-}
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 10px;
+    width:300px;
+    gap: 10px;
+  }
+  .video-item {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+    height: 0;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    cursor: pointer;
+    transition: opacity 0.2s ease-in-out;
+    display: flex;
+    flex-direction: column;
 
-.thumbnail {
-  border-radius: 50px;
-  position: relative;
-  /* width: 150px; */
-  height: 100px;
-  display: flex;
-
-justify-content:space-around;
-
-}
-
-.details {
-  margin-top: 5px;
-  font-size: 14px;
-}
-
-.title {
-  font-weight: bold;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.duration {
-  margin-left: 5px;
-}
-
-.add-video {
-  margin-top: 20px;
-}
+  }
+  .video-item:hover {
+    opacity: 0.8;
+  }
+  .thumbnail {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  .thumbnail video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .details {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 8px;
+    box-sizing: border-box;
+    color: #fff;
+    font-size: 14px;
+  }
+  .title {
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+  .duration {
+    font-style: italic;
+  }
 
 .add-video input {
   margin-right: 10px;
@@ -341,7 +397,7 @@ justify-content:space-around;
   padding: 10px 20px;
   cursor: pointer;
 }
-.home-view header{
+.main-content header{
   
   display: flex;
   justify-content: space-between;
@@ -378,82 +434,6 @@ justify-content:space-around;
   i{
     padding-right:10px;
   }
-.sidebar {
-    width: 200px;
-    position: fixed;
-    left: 0;
-    top: 0;
-    height: 100%;
-    background-color: #fff;
-    z-index: 999;
-    transition: margin-left 300ms;
-}
-.sidebar-brand{
-    height: 90px;
-    padding:1rem 0rem 1rem 2rem; 
-}
-.sidebar-brand span {
-    display: inline-block;
-    padding-right: 1rem;
-}
-.sidebar-menu {
-    margin-top: 1rem;
-}
-.sidebar-menu li {
-    width: 100%;
-    margin-bottom: 1.3rem;
-    padding-left: 2rem;
-    font-size: 15px;
-}
-.sidebar-menu li .available{
-    margin-left:3rem ;
-}
-.sidebar-menu li .available a span{
-    margin-left: 3.1rem;
-    background: #79aae6;
-    border-radius: 50%;
-    padding-left: .5rem;
-    font-size: 1.5rem;
-}
-a .li-span{
-    margin-left: 0rem;
-    background: #79aae6;
-    border-radius: 50%;
-    font-size: 1.5rem;
-    padding-left:.5rem;
-}
-.sidebar-menu a {
-    display: block;
-    color: #02060b;
-    padding-bottom: 1rem;
-}
-.sidebar-menu a.active {
-    color: #1c68c4;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-} 
-.sidebar-menu a span:first-child {
-    font-size: 1.5rem;
-    padding-right: 1rem;
-} 
-#nav-toggle:checked + .sidebar {
-    width: 70px;
-}
-#nav-toggle:checked + .sidebar .sidebar-brand,
-#nav-toggle:checked + .sidebar li {
-   padding-left: 1rem;
-   text-align: center;
-}
-#nav-toggle:checked + .sidebar li a{
-    padding-left: 0rem;
- }
- #nav-toggle:checked + .sidebar li a span{
-    padding-right: 1rem;
- }
-#nav-toggle:checked + .sidebar .sidebar-brand h3 span:last-child,
-#nav-toggle:checked + .sidebar li a span:last-child {
-   display: none;
-}
 #nav-toggle:checked ~ .main-content{
     margin-left: 70px;
  }
@@ -500,115 +480,11 @@ header label span {
     color:var(--text-grey) ;
     margin-top: -10px !important;
 }
-main{
-    margin-top: 85px;
-    padding: 2rem 1.5rem;
-    background: #f1f5f9;
-    min-height: calc(100vh -90px);
 
-}
-.cards {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: 2rem;
-    margin-top: 1rem;
-}
-.card-single {
-    display: flex;
-    justify-content: space-between;
-    background-color: #fff;
-    padding: 2rem;
-    border-radius: 2px;
-}
-.card-single div:last-child span{
-    color: #1c68c4;
-    font-size:3.5rem;
-}
-.card-single div:first-child span{
-    color: var(--text-grey);
 
-}
-.card-single:last-child{
-    background: #1c68c4;
-}
-.card-single:last-child div:last-child span{
-    color: #fff;
-}
-.card-single:last-child div:first-child span{
-   color: #fff;
-}
-.recent-grid {
-    margin-top: 3.5rem;
-
-}
-.card{
-   background: #fff; 
-}
-.card-header,
-.card-body {
-    padding: 1rem;
-    width: 100%;
-}
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.card-header button {
-    background: #1c68c4;
-    border-radius: 10px;
-    color: #fff;
-    font-size: 15px;
-    padding: .5rem 1rem;
-    border: 1px solid #1c68c4;
-}
-table {
-    border-collapse:collapse;
-}
-thead tr {
-    border: 1px solid #1c68c4;;
-}
-tbody tr {
-    border: 1px solid #1c68c4;;
-}
-thead td {
-    font-weight: 700;
-}
-td {
-    padding: .5rem 1rem;
-    font-size: 15px;
-    color: #222;
-    border: 1px solid #1c68c4;;
-   
-}
-td i {
-    color: #1c68c4;
-    padding-right: 1rem;
-}
-.table-responsive {
-    width: 100%;
-    overflow-x: auto;
-}
 
 @media only screen and (max-width:1200px){
-   .sidebar {
-        width: 70px;
-    }
-    .sidebar .sidebar-brand,
-     .sidebar li {
-       padding-left: 1rem;
-       text-align: center;
-    }
- .sidebar li a{
-        padding-left: 0rem;
-     }
-   .sidebar li a span{
-        padding-right: 1rem;
-     }
- .sidebar .sidebar-brand h3 span:last-child,
-  .sidebar li a span:last-child {
-       display: none;
-    }
+
      .main-content{
         margin-left: 70px;
      }
@@ -616,25 +492,7 @@ td i {
        width: calc(100% -70px);
        left: 70px;
      }
-     .sidebar:hover {
-        width: 200px;
-        z-index: 200;
-    }
-    .sidebar:hover .sidebar-brand,
-     .sidebar:hover li {
-       padding-left: 2rem;
-       text-align: left;
-    }
- .sidebar:hover li a{
-        padding-left: 1rem;
-     }
-   .sidebar:hover li a span{
-        padding-right: 1rem;
-     }
- .sidebar:hover .sidebar-brand h3 span:last-child,
-  .sidebar:hover li a span:last-child {
-       display: inline;
-    }
+
 }
  @media only screen and (max-width: 960px) {
     .cards  {
@@ -645,18 +503,7 @@ td i {
     }
  }
  @media only screen and (max-width: 768px) {
-    .cards  {
-        grid-template-columns:repeat(2, 1fr);
-    }
-    .recent-grid {
-        grid-template-columns: 100%;
-    }
-    .search-wrapper{
-        display: none;
-    }
-    .sidebar{
-        left: -100% !important;
-    }
+  
     header h3 {
         display: flex;
         align-items: center;
@@ -691,37 +538,10 @@ td i {
         left: 0 !important;
         
     }
-    #nav-toggle:checked + .sidebar {
-        left: 0 !important;
-        z-index: 100;
-        width: 200px;
-    }
-    #nav-toggle:checked + .sidebar {
-        width: 200px;
-        z-index: 200;
-    }
-    #nav-toggle:checked + .sidebar .sidebar-brand,
-    #nav-toggle:checked + .sidebar li {
-       padding-left: 2rem;
-       text-align: left;
-    }
-    #nav-toggle:checked + .sidebar li a{
-        padding-left: 1rem;
-     }
-     #nav-toggle:checked + .sidebar li a span{
-        padding-right: 1rem;
-     }
-     #nav-toggle:checked + .sidebar.sidebar-brand h3 span:last-child,
-     #nav-toggle:checked + .sidebar li a span:last-child {
-       display: inline;
-    }
+
     #nav-toggle:checked ~ .main-content {
         margin-left: 0rem !important;
     }
  }
- @media only screen and (max-width: 560px) {
-    .cards {
-        grid-template-columns: 100%;
-    }
- }
+
 </style>
