@@ -11,7 +11,7 @@
           </h3>
         </div>
         <form>
-            <!-- <label for="arquivo"></label> -->
+            <input type="url" class="inpdddut" v-model.trim="URL">
             <input @change="handleFileUpload" class="inpdddut" name="arquivo" id="arquivo" type="file">
             <input value="Add Video"  @click.prevent="addVideo" type="submit" class="inpdddut">
           </form>
@@ -67,7 +67,7 @@
       <!-- Video list -->
       <div class="col-sm-3 col-md-6 col-lg-6 col-xl-2">
         <div class="video-list">
-          <div v-for="video in videoList" :key="video.url" class="video-item" @click.prevent="playVideo(video)">
+          <div v-for="video in videoList" :key="video.url" class="video-item" @click="playVideo(video)">
             <div class="thumbnail">
               <video :src="video.url" autoplay muted loop ></video>
             </div>
@@ -91,12 +91,17 @@ export default {
   data(){
     return {
       profileMenu: null,
+      URL: ''
+
     }
   },
   computed: {
     // Get the current video and video list from Vuex store
     currentVideo() {
       return this.$store.state.currentVideo
+    },
+    isPlaying() {
+      return !this.$refs.video.paused
     },
     videoList() {
       return this.$store.state.videoList
@@ -125,7 +130,7 @@ export default {
   // Defining various methods used in the component
   methods: {
     toggleProfileMenu(){
-      this.profileMenu=!this.profileMenu
+      this.profileMenu =!this.profileMenu
     },
     // Method to handle file upload on selecting a video file
     handleFileUpload(event) {
@@ -134,23 +139,45 @@ export default {
     },
     // Method to add a new video to the video list
     addVideo() {
-      const video = {
-        title: this.file.name,
-        file: this.file,
-        url: URL.createObjectURL(this.file),
-        duration: '0:00'
+      if (this.file) {
+        const video = {
+          title: this.file.name,
+          file: this.file,
+          url: URL.createObjectURL(this.file),
+        };
+          
+        this.$store.commit('setVideoList', [...this.videoList, video]);
+        this.file = null;
+            
+      } else {
+        const video = {
+            title: this.URL,
+            url: this.URL,
+          }
+          this.$store.commit('setVideoList', [...this.videoList, video])
+          this.title = ''
+          this.url = ''
       }
-      this.$store.commit('setVideoList', [...this.videoList, video])
-      this.file = null // reset the selected file after adding the video
+    },
+    togglePlay() {
+      if (this.isPlaying) {
+        this.$refs.video.pause()
+      } else {
+        this.$refs.video.play()
+      }
     },
     // Method to play a video
     playVideo(video) {
-      // Check if a valid video is provided
-      if (!video || !video.file instanceof Blob) return
+      if (!video) {
+        return;
+      }
 
-      // Set the current video as the provided video
-      this.$store.commit('setCurrentVideo', video)
-},
+      if (video.file instanceof Blob) {
+        this.$store.commit('setCurrentVideo', video);
+      } else {
+        this.selectVideo(video); 
+      }
+  },
 
     seek(event) {
       // Check if the video element exists
@@ -166,12 +193,18 @@ export default {
       // Set the current time of the video to the percentage of the total duration clicked
       this.$refs.video.currentTime = duration * percent
     },
+    selectVideo(video) {
+      this.$store.commit('setCurrentVideo', video)
+      this.$refs.video.currentTime = 0
+      this.$refs.video.play()
+    },
     // Method to extract the video ID from a YouTube video URL
     getVideoId(url) {
       const match = url.match(/youtube\.com\/watch\?v=(\w+)/) ||
                     url.match(/youtu\.be\/(\w+)/)
       return match ? match[1] : null
     },
+    
     // Method to update the duration of the current video
     updateVideoDuration() {
       // Check if the video element exists
@@ -199,20 +232,8 @@ export default {
       this.$refs.video.play()
     },
   },
-//   mounted() {
-//   this.$nextTick(() => {
-//     this.$refs.video.addEventListener('loadedmetadata', this.updateVideoDuration)
-//     this.$refs.video.addEventListener('ended', this.videoEnded)
-//   })
-// },
-toggleProfileMenu() {
-this.profileMenu=!this.profileMenu;
-},
-    beforeUnmount() {
-      this.$refs.video.removeEventListener('loadedmetadata', this.updateVideoDuration);
-      this.$refs.video.removeEventListener('ended', this.videoEnded);
-    }
-  
+
+
 }
 
 </script>
@@ -248,6 +269,13 @@ label {
   margin-bottom: 20px;
   border: none;
   background-color: #1aa3bb;
+  border-radius: 5px;
+  width: 100%;
+  cursor: pointer;
+}
+.inpdddut[type="url"] {
+  padding: 10px;
+  margin-bottom: 20px;
   border-radius: 5px;
   width: 100%;
   cursor: pointer;
