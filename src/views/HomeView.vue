@@ -1,8 +1,7 @@
 <template>
- 
-
-<div class="main-content">
-  <header>
+   <!-- Video player -->
+  <div class="container">
+      <header>
         <div>
           <h3>
             <label for="nav-toggle">
@@ -43,10 +42,8 @@
             </div>
           </div> 
   </header>
-  <!-- Video player -->
-  <div class="container">
     <div class="row">
-      <div class="col-sm-9 col-md-6 col-lg-6 col-xl-10">
+      <div class="col1">
         <div class="my-container d-flex flex-column">
           <div class="video-player">
             <video ref="video" class="video" v-if="currentVideo" :src="currentVideo.url" autoplay controls></video>
@@ -65,7 +62,7 @@
       </div>
 
       <!-- Video list -->
-      <div class="col-sm-3 col-md-6 col-lg-6 col-xl-2">
+      <div class="col2">
         <div class="video-list">
           <div v-for="video in videoList" :key="video.url" class="video-item" @click="playVideo(video)">
             <div class="thumbnail">
@@ -80,9 +77,6 @@
       </div>
     </div>
   </div>
-
-</div>
-
 </template>
 <script>
 
@@ -175,7 +169,9 @@ export default {
       if (video.file instanceof Blob) {
         this.$store.commit('setCurrentVideo', video);
       } else {
-        this.selectVideo(video); 
+        this.$store.commit('setCurrentVideo', video);
+        this.$refs.video.currentTime = 0
+        this.$refs.video.play()
       }
   },
 
@@ -193,11 +189,7 @@ export default {
       // Set the current time of the video to the percentage of the total duration clicked
       this.$refs.video.currentTime = duration * percent
     },
-    selectVideo(video) {
-      this.$store.commit('setCurrentVideo', video)
-      this.$refs.video.currentTime = 0
-      this.$refs.video.play()
-    },
+ 
     // Method to extract the video ID from a YouTube video URL
     getVideoId(url) {
       const match = url.match(/youtube\.com\/watch\?v=(\w+)/) ||
@@ -238,18 +230,20 @@ export default {
 
 </script>
 <style scoped>
-.my-container {
-  display: flex;
-  flex-direction: row;
-  width: 750px;
-  margin-left: 100px;
-  margin-right: 0dvh;
-}
+
 .row{
-  display: flex;
-  flex-direction: row;
-z-index: 0;
   margin-top: 100px;
+  display:flex;
+  justify-content: space-between;
+  margin-left: 100px;
+  flex-direction: row;
+}
+.col1{
+  width:70%;
+}
+.col2{
+
+  width:30%;
 }
 form {
  
@@ -425,7 +419,7 @@ body, html {
   padding: 10px 20px;
   cursor: pointer;
 }
-.main-content header{
+.container header{
   
   display: flex;
   justify-content: space-between;
@@ -513,23 +507,16 @@ header label span {
 
 @media only screen and (max-width:1200px){
 
-     .main-content{
+     .container{
         margin-left: 70px;
      }
-   .main-content header{
+   .container header{
        width: calc(100% -70px);
        left: 70px;
      }
 
 }
- @media only screen and (max-width: 960px) {
-    .cards  {
-        grid-template-columns:repeat(3, 1fr);
-    }
-    .recent-grid {
-        grid-template-columns: 60% 40%;
-    }
- }
+
  @media only screen and (max-width: 768px) {
   
     header h3 {
@@ -557,7 +544,7 @@ header label span {
     header h3 {
         font-size: 30px;
     }
-    .main-content {
+    .container {
         width: 100%;
         margin-left: 0rem;
     }
