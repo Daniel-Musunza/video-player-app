@@ -553,7 +553,22 @@ header label span {
         left: 0 !important;
         
     }
+.row {
+  display: flex;
+  flex-direction: column;
+  margin-left: 0;
+}
+.col1{
+  width: 100%;
 
+}
+.col2{
+  width:100%;
+
+}
+.video-list{
+  width:100%;
+}
     #nav-toggle:checked ~ .main-content {
         margin-left: 0rem !important;
     }
