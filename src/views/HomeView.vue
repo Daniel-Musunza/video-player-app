@@ -76,7 +76,13 @@
         </div>
       </div>
     </div>
+    <div class="form">
+   <input type="url" class="inpdddut" v-model.trim="URL">
+    <input @change="handleFileUpload" class="inpdddut" name="arquivo" id="arquivo" type="file">
+    <input value="Add Video"  @click.prevent="addVideo" type="submit" class="inpdddut">
   </div>
+  </div>
+ 
 </template>
 <script>
 
@@ -412,6 +418,7 @@ body, html {
   margin-right: 10px;
 }
 
+
 .add-video button {
   border: none;
   background-color: rgb(0, 255, 0);
@@ -514,6 +521,9 @@ header label span {
        width: calc(100% -70px);
        left: 70px;
      }
+     .form{
+  display:none;
+}
 
 }
 
@@ -552,6 +562,14 @@ header label span {
         width: 100% !important;
         left: 0 !important;
         
+    }
+    form{
+      display: none;
+    }
+    .form{
+      display:flow-root;
+    position: fixed;
+      bottom: 0;
     }
 .row {
   display: flex;
