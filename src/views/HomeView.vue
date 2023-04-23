@@ -1,6 +1,6 @@
 <template>
    <!-- Video player -->
-  <div class="container">
+  <div class="container-fluid">
       <header>
         <div>
           <h3>
@@ -10,17 +10,14 @@
           </h3>
         </div>
         <form>
-            <input type="url" class="inpdddut" v-model.trim="URL">
+          
             <input @change="handleFileUpload" class="inpdddut" name="arquivo" id="arquivo" type="file">
-            <input value="Add Video"  @click.prevent="addVideo" type="submit" class="inpdddut">
           </form>
-          <div class="user-wrapper"  @click="toggleProfileMenu">
          
-            <div class="profile">
-                <span style="font-size:20px; padding-left: 25px;">3,s</span>
+            <div class="profile"  @click="toggleProfileMenu">
+                <span >3,s</span>
             </div>
-            <span class="down"><i class="fa-sharp fa-solid fa-angle-down"></i></span>
-          </div>
+          
           <div v-if="profileMenu " class="profile-menu">
             <div class="info">
               <div class="right">
@@ -41,21 +38,21 @@
               </div>
             </div>
           </div> 
-  </header>
+      </header>
     <div class="row">
       <div class="col1">
-        <div class="my-container d-flex flex-column">
+     
           <div class="video-player">
             <video ref="video" class="video" v-if="currentVideo" :src="currentVideo.url" autoplay controls></video>
             <div class="controls">
-              <button class="play-btn" v-if="!$refs.video?.paused" @click.prevent="$refs.video?.pause()"></button>
+              <button class="play-btn" v-if="!$refs.video?.paused" @click.prevent="$refs.video?.pause()">3,s</button>
               <button class="pause-btn" v-else @click.prevent="$refs.video?.play()"></button>
               <div class="progress-bar" @click="seek">
                 <div class="progress" :style="{ width: progress + '%' }"></div>
               </div>
               <div class="time">{{ currentTime }} / {{ duration }}</div>
             </div>
-          </div>
+     
           <!-- Add video form -->
      
         </div>
@@ -77,10 +74,8 @@
       </div>
     </div>
     <div class="form">
-   <input type="url" class="inpdddut" v-model.trim="URL">
-    <input @change="handleFileUpload" class="inpdddut" name="arquivo" id="arquivo" type="file">
-    <input value="Add Video"  @click.prevent="addVideo" type="submit" class="inpdddut">
-  </div>
+      <input @change="handleFileUpload" class="inpdddut" name="arquivo" id="arquivo" type="file">
+   </div>
   </div>
  
 </template>
@@ -91,7 +86,6 @@ export default {
   data(){
     return {
       profileMenu: null,
-      URL: ''
 
     }
   },
@@ -135,12 +129,8 @@ export default {
     // Method to handle file upload on selecting a video file
     handleFileUpload(event) {
       // Set the selected file as the current file
-      this.file = event.target.files[0]
-    },
-    // Method to add a new video to the video list
-    addVideo() {
-      if (this.file) {
-        const video = {
+      this.file = event.target.files[0];
+      const video = {
           title: this.file.name,
           file: this.file,
           url: URL.createObjectURL(this.file),
@@ -148,17 +138,9 @@ export default {
           
         this.$store.commit('setVideoList', [...this.videoList, video]);
         this.file = null;
-            
-      } else {
-        const video = {
-            title: this.URL,
-            url: this.URL,
-          }
-          this.$store.commit('setVideoList', [...this.videoList, video])
-          this.title = ''
-          this.url = ''
-      }
     },
+    // Method to add a new video to the video list
+
     togglePlay() {
       if (this.isPlaying) {
         this.$refs.video.pause()
@@ -196,12 +178,7 @@ export default {
       this.$refs.video.currentTime = duration * percent
     },
  
-    // Method to extract the video ID from a YouTube video URL
-    getVideoId(url) {
-      const match = url.match(/youtube\.com\/watch\?v=(\w+)/) ||
-                    url.match(/youtu\.be\/(\w+)/)
-      return match ? match[1] : null
-    },
+
     
     // Method to update the duration of the current video
     updateVideoDuration() {
@@ -238,10 +215,10 @@ export default {
 <style scoped>
 
 .row{
-  margin-top: 100px;
+  margin-top: 90px;
   display:flex;
   justify-content: space-between;
-  margin-left: 100px;
+  /* margin-left: 100px; */
   flex-direction: row;
 }
 .col1{
@@ -268,33 +245,12 @@ label {
   padding: 10px;
   margin-bottom: 20px;
   border: none;
-  background-color: #1aa3bb;
-  border-radius: 5px;
-  width: 100%;
-  cursor: pointer;
-}
-.inpdddut[type="url"] {
-  padding: 10px;
-  margin-bottom: 20px;
+  background-color: #ade4ee;
   border-radius: 5px;
   width: 100%;
   cursor: pointer;
 }
 
-.inpdddut[type="submit"] {
-  padding: 10px;
-  margin-bottom: 20px;
-  border: none;
-  background-color: #a0faa5;
-  border-radius: 5px;
-  width: 100px;
-  cursor: pointer;
-}
-
-.inpdddut[type="submit"]:hover {
-  background-color: #006F8F;
-}
-    
 .video-player {
     position: relative;
     width: 100%;
@@ -321,11 +277,16 @@ label {
   padding: 0 10px;
 }
 .play-btn {
-  width: 40px;
-  height: 40px;
-  border: none;
-  background-image: url('@/assets/logo.png');
-  background-size: cover;
+  /* width: 40px;
+  height: 40px; */
+  /* border: none; */
+  /* background-image: url('@/assets/logo.png');
+   */
+   font-size: 25px;
+  border-radius: 50%;
+  padding: 10px;
+  background-color: #79aae6;
+  /* background-size: cover; */
   cursor: pointer;
 }
 .progress-bar {
@@ -362,13 +323,13 @@ body, html {
     flex-wrap: wrap;
     justify-content: center;
     margin-top: 10px;
-    width:300px;
+    width:400px;
     gap: 10px;
   }
   .video-item {
     position: relative;
     width: 100%;
-    max-width: 300px;
+
     height: 0;
     padding-bottom: 56.25%; /* 16:9 aspect ratio */
     cursor: pointer;
@@ -426,24 +387,26 @@ body, html {
   padding: 10px 20px;
   cursor: pointer;
 }
-.container header{
+.container-fluid header{
   
   display: flex;
   justify-content: space-between;
-  padding: 1rem 1.5rem;
+  /* padding-top: 1rem; */
   box-shadow: 2px 2px 5px rgba(0,0,0, 0.2);
   position: fixed;
-  left: 200px;
-  right: 0;
-  width: calc(100% -200px);
-  top: 0;
-  z-index: 100;
+  height: fit-content;
+  /* margin-bottom: 0; */
+  right: 10px;
+  width: 100%;
+  /* top: 0; */
+  z-index: 999;
   transition: left 300ms;
 
 }
 .profile-menu {
     position: absolute;
     border-radius: 10px;
+   
     top: 60px;
     right: 0; 
     width: 270px;
@@ -488,36 +451,24 @@ header label span {
     font-size: 1.7rem;
     padding-left: 1rem ;
 }
-
-.user-wrapper{
-    display: flex;
-    align-items: center;
-    float: right;
-     
+.profile {
+  margin: 10px;
 }
-.user-wrapper span{
-    font-size: 25px;
-    margin-right: 30px;
-     
-}
-.user-wrapper img{
-    border-radius: 50%;
-    margin-right: 1rem;
-}
-.user-wrapper small {
-    display: inline-block;
-    color:var(--text-grey) ;
-    margin-top: -10px !important;
+.profile span {
+  font-size: 25px;
+  border-radius: 50%;
+  padding: 10px;
+  background-color: #79aae6;
 }
 
 
 
 @media only screen and (max-width:1200px){
 
-     .container{
+     .container-fluid{
         margin-left: 70px;
      }
-   .container header{
+   .container-fluid header{
        width: calc(100% -70px);
        left: 70px;
      }
@@ -563,7 +514,7 @@ display:none;
     header h3 {
         font-size: 30px;
     }
-    .container {
+    .container-fluid {
         width: 100%;
         margin-left: 0rem;
     }
