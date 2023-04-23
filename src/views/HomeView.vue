@@ -15,25 +15,20 @@
           </form>
          
             <div class="profile"  @click="toggleProfileMenu">
-                <span >3,s</span>
+                <span >cool</span>
             </div>
           
           <div v-if="profileMenu " class="profile-menu">
             <div class="info">
               <div class="right">
-                <h4>MR THREE COMMAS </h4>
-                <small>Super admin</small>
+                <h4>Musunza Festus</h4>
+                <small>Developer</small>
                 <hr>
-                <br>
+     
                
-                <router-link to="/profile-view"><i class="fa-regular fa-user" ></i>View Profile</router-link>
+                <a href="https://musunzaportfolio.web.app"><i class="fa-regular fa-user" ></i>View Profile</a>
                 
-                <hr>
-                <br>
-                <router-link  to="/"> <i class="fa-solid fa-user-group"></i>Switch Account</router-link>
-                
-                <hr>
-                <br>
+          
                 
               </div>
             </div>
@@ -45,7 +40,7 @@
           <div class="video-player">
             <video ref="video" class="video" v-if="currentVideo" :src="currentVideo.url" autoplay controls></video>
             <div class="controls">
-              <button class="play-btn" v-if="!$refs.video?.paused" @click.prevent="$refs.video?.pause()">3,s</button>
+              <button class="play-btn" v-if="!$refs.video?.paused" @click.prevent="$refs.video?.pause()">Cool</button>
               <button class="pause-btn" v-else @click.prevent="$refs.video?.play()"></button>
               <div class="progress-bar" @click="seek">
                 <div class="progress" :style="{ width: progress + '%' }"></div>
@@ -213,19 +208,23 @@ export default {
 
 </script>
 <style scoped>
-
+body {
+  background-color: #222;
+}
 .row{
   margin-top: 90px;
   display:flex;
   justify-content: space-between;
   /* margin-left: 100px; */
   flex-direction: row;
+ 
 }
 .col1{
   width:70%;
+  box-shadow: 2px 2px 7px rgba(0,0,0, 0.2);
 }
 .col2{
-
+  box-shadow: 2px 2px 7px rgba(0,0,0, 0.2);
   width:30%;
 }
 form {
@@ -245,7 +244,7 @@ label {
   padding: 10px;
   margin-bottom: 20px;
   border: none;
-  background-color: #ade4ee;
+  background-color: #2dcfeb;
   border-radius: 5px;
   width: 100%;
   cursor: pointer;
@@ -285,7 +284,7 @@ label {
    font-size: 25px;
   border-radius: 50%;
   padding: 10px;
-  background-color: #79aae6;
+  background-color: #2dcfeb;
   /* background-size: cover; */
   cursor: pointer;
 }
@@ -314,6 +313,7 @@ label {
 /* Video List */
 body, html {
     overflow: hidden;
+   
   }
   .video-list {
     max-height: 80vh;
@@ -380,15 +380,13 @@ body, html {
 }
 
 
-.add-video button {
-  border: none;
-  background-color: rgb(0, 255, 0);
-  color: #fff;
-  padding: 10px 20px;
-  cursor: pointer;
+.container-fluid{
+  background-color: #676565;
+  color: #000;
+  height: 100%;
 }
 .container-fluid header{
-  
+
   display: flex;
   justify-content: space-between;
   /* padding-top: 1rem; */
@@ -410,14 +408,17 @@ body, html {
     top: 60px;
     right: 0; 
     width: 270px;
-    background-color: #fff;
-    box-shadow: 0 4px 0px -1px #79aae6;
+    background-color: #232222;
+    box-shadow: 0 4px 0px -1px #ffffff;
+  }
+  a{
+  text-decoration: none;
   }
   .info {
     display: flex;
     align-items: center;
-    padding: 15px;
-    border-bottom: 1px solid #fff;
+    padding: 5px;
+    border-bottom: 1px solid #787777;
   }
   .right {
     flex: 1;
@@ -458,7 +459,7 @@ header label span {
   font-size: 25px;
   border-radius: 50%;
   padding: 10px;
-  background-color: #79aae6;
+  background-color: #2dcfeb;
 }
 
 
