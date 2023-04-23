@@ -3,11 +3,7 @@
   <div class="container-fluid">
       <header>
         <div>
-          <h3>
-            <label for="nav-toggle">
-                <span><i class="fa-solid fa-bars"></i></span>
-            </label>
-          </h3>
+        
         </div>
         <form>
           
@@ -217,6 +213,7 @@ body {
   justify-content: space-between;
   /* margin-left: 100px; */
   flex-direction: row;
+  min-height: 578px;
  
 }
 .col1{
@@ -384,6 +381,7 @@ body, html {
   background-color: #676565;
   color: #000;
   height: 100%;
+  overflow: hidden;
 }
 .container-fluid header{
 
@@ -404,7 +402,7 @@ body, html {
 .profile-menu {
     position: absolute;
     border-radius: 10px;
-   
+   color: #fff;
     top: 60px;
     right: 0; 
     width: 270px;
