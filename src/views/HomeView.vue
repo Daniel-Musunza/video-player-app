@@ -34,7 +34,7 @@
       <div class="col1">
      
           <div class="video-player">
-            <video ref="video" class="video" v-if="currentVideo" :src="currentVideo.url" autoplay controls></video>
+            <video ref="video" class="video" v-if="currentVideo" :src="currentVideo.url" autoplay  controls></video>
             <div class="controls">
               <button class="play-btn" v-if="!$refs.video?.paused" @click.prevent="$refs.video?.pause()">Cool</button>
               <button class="pause-btn" v-else @click.prevent="$refs.video?.play()"></button>
@@ -273,11 +273,7 @@ label {
   padding: 0 10px;
 }
 .play-btn {
-  /* width: 40px;
-  height: 40px; */
-  /* border: none; */
-  /* background-image: url('@/assets/logo.png');
-   */
+ 
    font-size: 25px;
   border-radius: 50%;
   padding: 10px;
@@ -287,7 +283,7 @@ label {
 }
 .progress-bar {
   width: 60%;
-  height: 4px;
+  height:5px;
   background-color: rgba(255, 255, 255, 0.5);
   margin: 0 10px;
   position: relative;
@@ -308,10 +304,6 @@ label {
 }
 
 /* Video List */
-body, html {
-    overflow: hidden;
-   
-  }
   .video-list {
     max-height: 80vh;
     overflow-y: scroll;
