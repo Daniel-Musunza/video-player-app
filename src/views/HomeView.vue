@@ -211,7 +211,6 @@ body {
   margin-top: 90px;
   display:flex;
   justify-content: space-between;
-  /* margin-left: 100px; */
   flex-direction: row;
   min-height: 578px;
  
@@ -231,11 +230,6 @@ form {
   width: auto;
 }
 
-label {
-  font-weight: bold;
-  display: block;
-  margin-bottom: 10px;
-}
 
 .inpdddut[type="file"] {
   padding: 10px;
