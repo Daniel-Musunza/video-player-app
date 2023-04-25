@@ -272,7 +272,7 @@ form {
   border-radius: 50%;
   padding: 10px;
   background-color: #2dcfeb;
-  /* background-size: cover; */
+ 
   cursor: pointer;
 }
 .progress-bar {
@@ -358,9 +358,6 @@ form {
     font-style: italic;
   }
 
-.add-video input {
-  margin-right: 10px;
-}
 
 
 .container-fluid{
