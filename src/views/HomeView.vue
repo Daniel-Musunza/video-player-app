@@ -412,7 +412,6 @@ form {
    left: 70px;
  }
 
-
 #nav-toggle{
     display: none;
 }
@@ -433,11 +432,7 @@ header label span {
   padding: 10px;
   background-color: #2dcfeb;
 }
-
-
-
 @media only screen and (max-width:1200px){
-
      .container-fluid{
         margin-left: 70px;
      }
@@ -446,8 +441,8 @@ header label span {
        left: 70px;
      }
      .form{
-  display:none;
-}
+      display:none;
+    }
 
 }
 
