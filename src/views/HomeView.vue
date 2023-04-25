@@ -367,17 +367,13 @@ form {
   overflow: hidden;
 }
 .container-fluid header{
-
   display: flex;
   justify-content: space-between;
-  /* padding-top: 1rem; */
   box-shadow: 2px 2px 5px rgba(0,0,0, 0.2);
   position: fixed;
   height: fit-content;
-  /* margin-bottom: 0; */
   right: 10px;
   width: 100%;
-  /* top: 0; */
   z-index: 999;
   transition: left 300ms;
 
@@ -415,11 +411,6 @@ form {
    width: calc(100% -70px);
    left: 70px;
  }
-.homeview {
-    transition: margin-left 300ms;
-    /* margin-left: 200px; */
-   
-}
 
 
 #nav-toggle{
