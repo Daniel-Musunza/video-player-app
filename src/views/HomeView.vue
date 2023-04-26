@@ -211,7 +211,6 @@ export default {
   justify-content: space-between;
   flex-direction: row;
   min-height: 578px;
- 
 }
 .col1{
   width:70%;
@@ -222,13 +221,10 @@ export default {
   width:30%;
 }
 form {
- 
   border-radius: 5px;
   display: flex;
   width: auto;
 }
-
-
 .inpdddut[type="file"] {
   padding: 10px;
   margin-bottom: 20px;
@@ -238,7 +234,6 @@ form {
   width: 100%;
   cursor: pointer;
 }
-
 .video-player {
     position: relative;
     width: 100%;
@@ -269,8 +264,7 @@ form {
    font-size: 25px;
   border-radius: 50%;
   padding: 10px;
-  background-color: #2dcfeb;
- 
+  background-color: #2dcfeb; 
   cursor: pointer;
 }
 .progress-bar {
@@ -299,7 +293,6 @@ form {
   .video-list {
     max-height: 80vh;
     overflow-y: scroll;
-
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -310,7 +303,6 @@ form {
   .video-item {
     position: relative;
     width: 100%;
-
     height: 0;
     padding-bottom: 56.25%; /* 16:9 aspect ratio */
     cursor: pointer;
@@ -445,8 +437,6 @@ header label span {
 }
 
 @media only screen and (min-width:800px){
-
-
 .form{
 display:none;
 }
