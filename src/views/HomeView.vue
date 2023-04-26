@@ -204,9 +204,7 @@ export default {
 
 </script>
 <style scoped>
-body {
-  background-color: #222;
-}
+
 .row{
   margin-top: 90px;
   display:flex;
