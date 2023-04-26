@@ -18,14 +18,11 @@
             <div class="info">
               <div class="right">
                 <h4>Musunza Festus</h4>
-                <small>Developer</small>
+                <small>Developer of the App</small>
                 <hr>
      
                
-                <a href="https://musunzaportfolio.web.app"><i class="fa-regular fa-user" ></i>View Profile</a>
-                
-          
-                
+                <a href="https://musunzaportfolio.web.app"><i class="fa-regular fa-user" ></i>View Profile</a>                
               </div>
             </div>
           </div> 
@@ -168,8 +165,6 @@ export default {
       // Set the current time of the video to the percentage of the total duration clicked
       this.$refs.video.currentTime = duration * percent
     },
- 
-
     
     // Method to update the duration of the current video
     updateVideoDuration() {
@@ -437,9 +432,9 @@ header label span {
 }
 
 @media only screen and (min-width:800px){
-.form{
-display:none;
-}
+  .form{
+  display:none;
+  }
 
 }
 
