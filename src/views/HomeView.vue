@@ -514,17 +514,7 @@ height: 600px;
     height: 100%;
     object-fit: cover;
   }
-.controls {
-  position: absolute;
-  bottom: -20px;
-  width: 100%;
-  height: 50px;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 10px;
-}
+
  }
 
 </style>
