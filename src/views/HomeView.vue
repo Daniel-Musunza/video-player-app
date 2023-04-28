@@ -489,7 +489,7 @@ header label span {
 }
 .col1{
   width: 100%;
-
+height: 600px;
 }
 .col2{
   width:100%;
@@ -501,6 +501,30 @@ header label span {
     #nav-toggle:checked ~ .main-content {
         margin-left: 0rem !important;
     }
+    .video-player {
+    position: relative;
+    height: 100%;
+    padding-top: 5.25%; /* 16:9 aspect ratio */
+    margin-bottom: 20px;
+  }
+  .video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    object-fit: cover;
+  }
+.controls {
+  position: absolute;
+  bottom: -20px;
+  width: 100%;
+  height: 50px;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+}
  }
 
 </style>
