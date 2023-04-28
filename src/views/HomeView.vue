@@ -485,13 +485,13 @@ header label span {
 .row {
   display: flex;
   flex-direction: column;
-  margin-top: 10px;
-  width: 100%;
+  margin-top: 57px;
+  margin-right: 0;
   height: fit-content;
 }
 .col1{
   width: 100%;
-height: 777px;
+height: 700px;
 }
 .col2{
   width:100%;
