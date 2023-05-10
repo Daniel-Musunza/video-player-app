@@ -18,7 +18,7 @@
             <div class="info">
               <div class="right">
                 <h4>Musunza Festus</h4>
-                <small>Developer of the App</small>
+                <small>Developer</small>
                 <hr>
      
                
@@ -31,7 +31,7 @@
       <div class="col1">
      
           <div class="video-player">
-            <video ref="video" class="video" v-if="currentVideo" :src="currentVideo.url" autoplay  controls></video>
+            <video ref="video" class="video" v-if="currentVideo" :src="currentVideo.url" autoplay loop controls></video>
             <div class="controls">
               <button class="play-btn" v-if="!$refs.video?.paused" @click.prevent="$refs.video?.pause()">Cool</button>
               <button class="pause-btn" v-else @click.prevent="$refs.video?.play()"></button>
@@ -50,8 +50,12 @@
       <div class="col2">
         <div class="video-list">
           <div v-for="video in videoList" :key="video.url" class="video-item" @click="playVideo(video)">
-            <div class="thumbnail">
-              <video :src="video.url" autoplay muted loop ></video>
+            <div class="thumbnail"> 
+              <video :src="video.url" loop  
+                @click="playVideo(video)"
+                @mouseover="hoverVideo(video)"
+                @mouseleave="leaveVideo()" controls>
+              </video>
             </div>
             <div class="details">
               <div class="title">{{ video.title }}</div>
@@ -74,7 +78,7 @@ export default {
   data(){
     return {
       profileMenu: null,
-
+      currentIndex: 0,
     }
   },
   computed: {
@@ -114,6 +118,36 @@ export default {
     toggleProfileMenu(){
       this.profileMenu =!this.profileMenu
     },
+    handleScroll() {
+      const videoPlayers = this.$refs.videoPlayer;
+
+      // Check if any video element is visible on the screen
+      const visiblePlayer = Array.from(videoPlayers).find((player) => {
+        const rect = player.getBoundingClientRect();
+        return (
+          rect.top >= 0 &&
+          rect.bottom <=
+            (window.innerHeight || document.documentElement.clientHeight)
+        );
+      });
+
+      if (visiblePlayer) {
+        // Get the index of the visible player
+        const index = Array.from(videoPlayers).indexOf(visiblePlayer);
+
+        // Only play the visible player
+        visiblePlayer.play();
+
+        // Mute all other players
+        Array.from(videoPlayers)
+          .filter((player) => player !== visiblePlayer)
+          .forEach((player) => (player.muted = true));
+
+        // Update the current index
+        this.currentIndex = index;
+      }
+    },
+
     // Method to handle file upload on selecting a video file
     handleFileUpload(event) {
       // Set the selected file as the current file
@@ -193,19 +227,45 @@ export default {
       this.$refs.video.play()
     },
   },
+  mounted() {
+    // Add a scroll event listener to the window object
+    window.addEventListener("scroll", this.handleScroll);
+  },
+  beforeDestroy() {
+    // Remove the scroll event listener when the component is destroyed
+    window.removeEventListener("scroll", this.handleScroll);
+  },
 
 
 }
 
 </script>
 <style scoped>
+.container-fluid{
+  background-color: #676565;
+  color: #000;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+.container-fluid header{
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 2px 2px 5px rgba(0,0,0, 0.2);
+  position: fixed;
+  height: fit-content;
+  right: 10px;
+  width: 100%;
+  z-index: 999;
+  transition: left 300ms;
 
+}
 .row{
-  margin-top: 90px;
+  margin-top: 80px;
   display:flex;
   justify-content: space-between;
   flex-direction: row;
-  min-height: 578px;
+  width: 100%;
 }
 .col1{
   width:70%;
@@ -292,13 +352,12 @@ form {
     flex-wrap: wrap;
     justify-content: center;
     margin-top: 10px;
-    width:400px;
+    width:100%;
     gap: 10px;
   }
   .video-item {
     position: relative;
     width: 100%;
-    height: 0;
     padding-bottom: 56.25%; /* 16:9 aspect ratio */
     cursor: pointer;
     transition: opacity 0.2s ease-in-out;
@@ -310,19 +369,16 @@ form {
     opacity: 0.8;
   }
   .thumbnail {
-    position: absolute;
-    top: 0;
-    left: 0;
+   
     width: 100%;
-    height: 100%;
-    overflow: hidden;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height:fit-content;
+   
+  
   }
   .thumbnail video {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: fit-content;
+ 
   }
   .details {
     position: absolute;
@@ -345,24 +401,7 @@ form {
 
 
 
-.container-fluid{
-  background-color: #676565;
-  color: #000;
-  height: 100%;
-  overflow: hidden;
-}
-.container-fluid header{
-  display: flex;
-  justify-content: space-between;
-  box-shadow: 2px 2px 5px rgba(0,0,0, 0.2);
-  position: fixed;
-  height: fit-content;
-  right: 10px;
-  width: 100%;
-  z-index: 999;
-  transition: left 300ms;
 
-}
 .profile-menu {
     position: absolute;
     border-radius: 10px;
@@ -467,7 +506,8 @@ header label span {
     }
     .container-fluid {
         width: 100%;
-        margin-left: 0rem;
+       
+        margin: 0;
     }
     header {
         width: 100% !important;
@@ -485,34 +525,46 @@ header label span {
 .row {
   display: flex;
   flex-direction: column;
-  margin-top: 57px;
-  margin-right: 0;
-  height: fit-content;
+  
+  margin: 0;
 }
 .col1{
-  width: 100%;
-height: 700px;
+ display: none;
 }
 .col2{
   width:100%;
+right: 0;
+}
 
-}
-.video-list{
-  width:100%;
-}
     #nav-toggle:checked ~ .main-content {
         margin-left: 0rem !important;
     }
-    .video-player {
-    position: relative;
-    height: 100%;
-    padding-top: 5.25%; /* 16:9 aspect ratio */
-    margin-bottom: 20px;
+  .video-list{
+    height: auto;
+    margin-top: 73px;;
   }
-  .video {
+  .video-item {
+    position: relative;
+    height: 675px;
+    cursor:grab;
+   
+
+  }
+  .video-item:hover {
+    opacity: 0.8;
+  }
+  .thumbnail {
     position: absolute;
     top: 0;
     left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  .thumbnail video {
+    width: 100%;
     height: 100%;
     object-fit: cover;
   }
