@@ -51,10 +51,7 @@
         <div class="video-list">
           <div v-for="video in videoList" :key="video.url" class="video-item" @click="playVideo(video)">
             <div class="thumbnail"> 
-              <video :src="video.url" loop  
-                @click="playVideo(video)"
-                @mouseover="hoverVideo(video)"
-                @mouseleave="leaveVideo()" controls>
+              <video :src="video.url" loop autoplay muted>
               </video>
             </div>
             <div class="details">
@@ -363,6 +360,7 @@ form {
     transition: opacity 0.2s ease-in-out;
     display: flex;
     flex-direction: column;
+    height: 200px;
 
   }
   .video-item:hover {
@@ -518,9 +516,12 @@ header label span {
       display: none;
     }
     .form{
-      display:flow-root;
+      display:flex;
+      justify-content: center;
+      margin-left: 18px;
     position: fixed;
       bottom: 0;
+
     }
 .row {
   display: flex;
