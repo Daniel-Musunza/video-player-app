@@ -51,8 +51,7 @@
         <div class="video-list">
           <div v-for="video in videoList" :key="video.url" class="video-item" @click="playVideo(video)">
             <div class="thumbnail"> 
-              <video :src="video.url" loop autoplay muted>
-              </video>
+              <video :src="video.url" loop autoplay muted></video>
             </div>
             <div class="details">
               <div class="title">{{ video.title }}</div>
@@ -348,7 +347,7 @@ form {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    margin-top: 10px;
+    margin: 10px;
     width:100%;
     gap: 10px;
   }
