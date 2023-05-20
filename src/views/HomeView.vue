@@ -7,7 +7,20 @@
         </div>
         <form>
           
-            <input @change="handleFileUpload" class="inpdddut" name="arquivo" id="arquivo" type="file">
+            <input @change="handleFileUpload" class="inpdddut" name="arquivo" id="arquivo" type="file"/>
+            <input placeholder="URL" v-model="url" class="input" name="text" type="text"/>
+            <button @click.prevent="addVideo()" class="btn" type="button">
+                <strong>Add</strong>
+                <div id="container-stars">
+                    <div id="stars"></div>
+                </div>
+
+                <div id="glow">
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                </div>
+              </button>
+
           </form>
          
             <div class="profile"  @click="toggleProfileMenu">
@@ -31,7 +44,8 @@
       <div class="col1">
      
           <div class="video-player">
-            <video ref="video" class="video" v-if="currentVideo" :src="currentVideo.url" autoplay loop controls></video>
+            <video ref="video" class="video" v-if="currentVideo" :src="currentVideo.url" autoplay loop controls>
+              <span> {{  currentVideo.title}}</span></video>
             <div class="controls">
               <button class="play-btn" v-if="!$refs.video?.paused" @click.prevent="$refs.video?.pause()">Cool</button>
               <button class="pause-btn" v-else @click.prevent="$refs.video?.play()"></button>
@@ -40,7 +54,7 @@
               </div>
               <div class="time">{{ currentTime }} / {{ duration }}</div>
             </div>
-     
+     <span> {{  currentVideo.title}}</span>
           <!-- Add video form -->
      
         </div>
@@ -68,7 +82,7 @@
  
 </template>
 <script>
-
+import { mapState, mapActions } from 'vuex';
 export default {
   name: 'HomeView',
   data(){
@@ -85,9 +99,7 @@ export default {
     isPlaying() {
       return !this.$refs.video.paused
     },
-    videoList() {
-      return this.$store.state.videoList
-    },
+    ...mapState(['videoList']),
     // Compute the progress, current time, and duration of the video player
     progress() {
       if (!this.$refs.video) return 0
@@ -143,19 +155,65 @@ export default {
         this.currentIndex = index;
       }
     },
-
+    ...mapActions(['getVideoList']),
     // Method to handle file upload on selecting a video file
     handleFileUpload(event) {
       // Set the selected file as the current file
       this.file = event.target.files[0];
-      const video = {
+      const newData = {
           title: this.file.name,
           file: this.file,
           url: URL.createObjectURL(this.file),
         };
-          
-        this.$store.commit('setVideoList', [...this.videoList, video]);
+        this.$store.commit('setVideoList', [...this.videoList, newData]);
+            // Send the new data to the server
+            fetch('http://localhost:3000/addData', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newData)
+            })
+            .then(response => {
+                if (response.ok) {
+                console.log('Video Added successfully!');
+                this.file = null;
+                } else {
+                console.log('Failed add video to data.json');
+                }
+            })
+            .catch(error => {
+                console.log('An error occurred:', error);
+            });
         this.file = null;
+    },
+    addVideo() {
+      // Set the selected file as the current file
+      const newData = {
+          title: this.url,
+          url: this.url,
+        };
+        this.$store.commit('setVideoList', [...this.videoList, newData]);
+            // Send the new data to the server
+            fetch('http://localhost:3000/addData', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newData)
+            })
+            .then(response => {
+                if (response.ok) {
+                console.log('Video Added successfully!');
+                this.file = null;
+                } else {
+                console.log('Failed add video to data.json');
+                }
+            })
+            .catch(error => {
+                console.log('An error occurred:', error);
+            });
+       
     },
     // Method to add a new video to the video list
 
@@ -176,8 +234,6 @@ export default {
         this.$store.commit('setCurrentVideo', video);
       } else {
         this.$store.commit('setCurrentVideo', video);
-        this.$refs.video.currentTime = 0
-        this.$refs.video.play()
       }
   },
 
@@ -231,12 +287,183 @@ export default {
     // Remove the scroll event listener when the component is destroyed
     window.removeEventListener("scroll", this.handleScroll);
   },
+  created() {
+  this.getVideoList();
+},
 
 
 }
 
 </script>
 <style scoped>
+.btn {
+  margin:10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 13rem;
+  height: 3rem;
+  background-size: 300% 300%;
+  backdrop-filter: blur(1rem);
+  border-radius: 5rem;
+  transition: 0.5s;
+  animation: gradient_301 5s ease infinite;
+  border: double 4px transparent;
+  background-image: linear-gradient(#212121, #212121),  linear-gradient(137.48deg, #ffdb3b 10%,#FE53BB 45%, #8F51EA 67%, #0044ff 87%);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+}
+
+#container-stars {
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  transition: 0.5s;
+  backdrop-filter: blur(1rem);
+  border-radius: 5rem;
+}
+
+strong {
+  z-index: 2;
+  font-family: 'Avalors Personal Use';
+  font-size: 12px;
+  letter-spacing: 5px;
+  color: #FFFFFF;
+  text-shadow: 0 0 4px white;
+}
+
+#glow {
+  position: absolute;
+  display: flex;
+  width: 12rem;
+}
+
+.circle {
+  width: 100%;
+  height: 30px;
+  filter: blur(2rem);
+  animation: pulse_3011 4s infinite;
+  z-index: -1;
+}
+
+.circle:nth-of-type(1) {
+  background: rgba(254, 83, 186, 0.636);
+}
+
+.circle:nth-of-type(2) {
+  background: rgba(142, 81, 234, 0.704);
+}
+
+.btn:hover #container-stars {
+  z-index: 1;
+  background-color: #212121;
+}
+
+.btn:hover {
+  transform: scale(1.1)
+}
+
+.btn:active {
+  border: double 4px #FE53BB;
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  animation: none;
+}
+
+.btn:active .circle {
+  background: #FE53BB;
+}
+
+#stars {
+  position: relative;
+  background: transparent;
+  width: 200rem;
+  height: 200rem;
+}
+
+#stars::after {
+  content: "";
+  position: absolute;
+  top: -10rem;
+  left: -100rem;
+  width: 100%;
+  height: 100%;
+  animation: animStarRotate 90s linear infinite;
+}
+
+#stars::after {
+  background-image: radial-gradient(#ffffff 1px, transparent 1%);
+  background-size: 50px 50px;
+}
+
+#stars::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 170%;
+  height: 500%;
+  animation: animStar 60s linear infinite;
+}
+
+#stars::before {
+  background-image: radial-gradient(#ffffff 1px, transparent 1%);
+  background-size: 50px 50px;
+  opacity: 0.5;
+}
+
+@keyframes animStar {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-135rem);
+  }
+}
+
+@keyframes animStarRotate {
+  from {
+    transform: rotate(360deg);
+  }
+
+  to {
+    transform: rotate(0);
+  }
+}
+
+@keyframes gradient_301 {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes pulse_3011 {
+  0% {
+    transform: scale(0.75);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+  }
+
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+  }
+
+  100% {
+    transform: scale(0.75);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+}
 .container-fluid{
   background-color: #676565;
   color: #000;
@@ -278,12 +505,24 @@ form {
 }
 .inpdddut[type="file"] {
   padding: 10px;
-  margin-bottom: 20px;
+  margin: 10px;
   border: none;
   background-color: #2dcfeb;
   border-radius: 5px;
   width: 100%;
   cursor: pointer;
+}
+.input {
+  margin: 10px;
+  background: none;
+  border: none;
+  outline: none;
+  max-width: 190px;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 9999px;
+  box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+  color: #fff;
 }
 .video-player {
     position: relative;
