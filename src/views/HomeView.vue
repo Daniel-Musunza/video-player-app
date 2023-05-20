@@ -44,8 +44,7 @@
       <div class="col1">
      
           <div class="video-player">
-            <video ref="video" class="video" v-if="currentVideo" :src="currentVideo.url" autoplay loop controls>
-              <span> {{  currentVideo.title}}</span></video>
+            <video ref="video" class="video" v-if="currentVideo" :src="currentVideo.url" autoplay loop controls></video>
             <div class="controls">
               <button class="play-btn" v-if="!$refs.video?.paused" @click.prevent="$refs.video?.pause()">Cool</button>
               <button class="pause-btn" v-else @click.prevent="$refs.video?.play()"></button>
@@ -54,7 +53,6 @@
               </div>
               <div class="time">{{ currentTime }} / {{ duration }}</div>
             </div>
-     <span> {{  currentVideo.title}}</span>
           <!-- Add video form -->
      
         </div>
