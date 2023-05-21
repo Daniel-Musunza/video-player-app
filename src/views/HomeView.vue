@@ -436,7 +436,7 @@ form {
   justify-content: center;
 }
 .open{
-  margin-left: 20px;
+  margin-left: 10px;
 }
 .input[type="file"] {
   margin: 10px;
@@ -536,8 +536,7 @@ form {
     transition: opacity 0.2s ease-in-out;
     display: flex;
     flex-direction: column;
-    height: 200px;
-
+    height: 20px;
   }
   .video-item:hover {
     opacity: 0.8;
