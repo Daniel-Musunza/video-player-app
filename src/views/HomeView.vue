@@ -7,7 +7,7 @@
         </div>
         <form>
           
-            <input @change="handleFileUpload" class="inpdddut" name="arquivo" id="arquivo" type="file"/>
+            <input @change="handleFileUpload" class="input" name="arquivo" id="arquivo" type="file"/>
             <input placeholder="URL" v-model="url" class="input" name="text" type="text"/>
             <button @click.prevent="addVideo()" class="btn" type="button">
                 <strong>Add</strong>
@@ -24,7 +24,17 @@
           </form>
          
             <div class="profile"  @click="toggleProfileMenu">
-                <span >cool</span>
+              <button class="btn" type="button">
+                <strong>Cool</strong>
+                <div id="container-stars">
+                    <div id="stars"></div>
+                </div>
+
+                <div id="glow">
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                </div>
+              </button>
             </div>
           
           <div v-if="profileMenu " class="profile-menu">
@@ -44,8 +54,8 @@
       <div class="col1">
      
           <div class="video-player">
-            <video ref="video" class="video" v-if="currentVideo" :src="currentVideo.url" autoplay loop controls type="video/mp4,video/mkv,video/mp3"></video>
-          
+            <video ref="video" class="video" v-if="currentVideo" :src="currentVideo.url" autoplay loop controls ></video>
+           
      
         </div>
       </div>
@@ -55,7 +65,7 @@
         <div class="video-list">
           <div v-for="video in videoList" :key="video.url" class="video-item" @click="playVideo(video)">
             <div class="thumbnail"> 
-              <video :src="video.url" loop autoplay muted type="video/mp4,video/mkv,video/mp3"></video>
+              <video :src="video.url" loop autoplay muted ></video>
             </div>
             <div class="details">
               <div class="title">{{ video.title }}</div>
@@ -90,60 +100,13 @@ export default {
       return !this.$refs.video.paused
     },
     ...mapState(['videoList']),
-    // Compute the progress, current time, and duration of the video player
-    progress() {
-      if (!this.$refs.video) return 0
-      const { currentTime, duration } = this.$refs.video
-      return (currentTime / duration) * 100
-    },
-    currentTime() {
-      if (!this.$refs.video) return '0:00'
-      const { currentTime } = this.$refs.video
-      const minutes = Math.floor(currentTime / 60)
-      const seconds = Math.floor(currentTime % 60)
-      return `${minutes}:${seconds.toString().padStart(2, '0')}`
-    },
-    duration() {
-      if (!this.$refs.video) return '0:00'
-      const { duration } = this.$refs.video
-      const minutes = Math.floor(duration / 60)
-      const seconds = Math.floor(duration % 60)
-      return `${minutes}:${seconds.toString().padStart(2, '0')}`
-    }
+
+ 
   },
   // Defining various methods used in the component
   methods: {
     toggleProfileMenu(){
       this.profileMenu =!this.profileMenu
-    },
-    handleScroll() {
-      const videoPlayers = this.$refs.videoPlayer;
-
-      // Check if any video element is visible on the screen
-      const visiblePlayer = Array.from(videoPlayers).find((player) => {
-        const rect = player.getBoundingClientRect();
-        return (
-          rect.top >= 0 &&
-          rect.bottom <=
-            (window.innerHeight || document.documentElement.clientHeight)
-        );
-      });
-
-      if (visiblePlayer) {
-        // Get the index of the visible player
-        const index = Array.from(videoPlayers).indexOf(visiblePlayer);
-
-        // Only play the visible player
-        visiblePlayer.play();
-
-        // Mute all other players
-        Array.from(videoPlayers)
-          .filter((player) => player !== visiblePlayer)
-          .forEach((player) => (player.muted = true));
-
-        // Update the current index
-        this.currentIndex = index;
-      }
     },
     ...mapActions(['getVideoList']),
     // Method to handle file upload on selecting a video file
@@ -156,25 +119,26 @@ export default {
           url: URL.createObjectURL(this.file),
         };
         this.$store.commit('setVideoList', [...this.videoList, newData]);
+        this.playVideo(newData);
             // Send the new data to the server
-            // fetch('http://localhost:3000/addData', {
-            // method: 'POST',
-            // headers: {
-            //     'Content-Type': 'application/json'
-            // },
-            // body: JSON.stringify(newData)
-            // })
-            // .then(response => {
-            //     if (response.ok) {
-            //     console.log('Video Added successfully!');
-            //     this.file = null;
-            //     } else {
-            //     console.log('Failed add video to data.json');
-            //     }
-            // })
-            // .catch(error => {
-            //     console.log('An error occurred:', error);
-            // });
+            fetch('http://localhost:3000/addData', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newData)
+            })
+            .then(response => {
+                if (response.ok) {
+                console.log('Video Added successfully!');
+                this.file = null;
+                } else {
+                console.log('Failed add video to data.json');
+                }
+            })
+            .catch(error => {
+                console.log('An error occurred:', error);
+            });
         this.file = null;
     },
     addVideo() {
@@ -227,39 +191,7 @@ export default {
       }
   },
 
-    seek(event) {
-      // Check if the video element exists
-      if (!this.$refs.video) return
-      // Get the total duration of the video
-      const { duration } = this.$refs.video
-      // Get the width of the progress bar
-      const progressWidth = event.target.offsetWidth
-      // Get the x-coordinate of the click event
-      const clickX = event.offsetX
-      // Calculate the percentage of the progress bar clicked
-      const percent = clickX / progressWidth
-      // Set the current time of the video to the percentage of the total duration clicked
-      this.$refs.video.currentTime = duration * percent
-    },
-    
-    // Method to update the duration of the current video
-    updateVideoDuration() {
-      // Check if the video element exists
-      if (!this.$refs.video) return
-      // Get the total duration of the video
-      const { duration } = this.$refs.video
-      // Get the index of the current video in the video list
-      const index = this.videoList.findIndex(video => video.url === this.currentVideo.url)
-      // Create a new video object with the updated duration
-      const updatedVideo = { ...this.currentVideo, duration: this.formatDuration(duration) }
-      // Update the video list with the new video object
-      this.$store.commit('updateVideoInList', { index, updatedVideo })
-    },
-    formatDuration(duration) {
-      const minutes = Math.floor(duration / 60)
-      const seconds = Math.floor(duration % 60)
-      return `${minutes}:${seconds.toString().padStart(2, '0')}`
-    },
+   
     videoEnded() {
       const currentIndex = this.videoList.findIndex(video => video.url === this.currentVideo.url)
       const nextIndex = (currentIndex + 1) % this.videoList.length
@@ -268,14 +200,6 @@ export default {
       this.$refs.video.load()
       this.$refs.video.play()
     },
-  },
-  mounted() {
-    // Add a scroll event listener to the window object
-    window.addEventListener("scroll", this.handleScroll);
-  },
-  beforeDestroy() {
-    // Remove the scroll event listener when the component is destroyed
-    window.removeEventListener("scroll", this.handleScroll);
   },
   created() {
   this.getVideoList();
@@ -288,10 +212,11 @@ export default {
 <style scoped>
 .btn {
   margin:10px;
+  right: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 13rem;
+  width: 5rem;
   height: 3rem;
   background-size: 300% 300%;
   backdrop-filter: blur(1rem);
@@ -493,14 +418,17 @@ form {
   display: flex;
   width: auto;
 }
-.inpdddut[type="file"] {
-  padding: 10px;
+.input[type="file"] {
   margin: 10px;
+  background: none;
   border: none;
-  background-color: #2dcfeb;
-  border-radius: 5px;
-  width: 100%;
-  cursor: pointer;
+  outline: none;
+  max-width: 250px;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 9999px;
+  box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+  color: #fff;
 }
 .input {
   margin: 10px;
@@ -673,15 +601,9 @@ header label span {
     font-size: 1.7rem;
     padding-left: 1rem ;
 }
-.profile {
+/* .profile {
   margin: 10px;
-}
-.profile span {
-  font-size: 25px;
-  border-radius: 50%;
-  padding: 10px;
-  background-color: #2dcfeb;
-}
+} */
 @media only screen and (max-width:1200px){
      .container-fluid{
         margin-left: 70px;

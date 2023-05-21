@@ -19,16 +19,16 @@ export default createStore({
     }
   },
   actions: {
-    // getVideoList({ commit }) {
-    //   fetch('http://localhost:3000/data.json')
-    //     .then((response) => response.json())  // Parse the JSON response
-    //     .then((data) => {
-    //       commit('setVideoList', data)  // Commit the parsed data to the store
-    //     })
-    //     .catch(error => {
-    //       console.log('An error occurred:', error);
-    //     });
-    // },
+    getVideoList({ commit }) {
+      fetch('http://localhost:3000/data.json')
+        .then((response) => response.json())  // Parse the JSON response
+        .then((data) => {
+          commit('setVideoList', data)  // Commit the parsed data to the store
+        })
+        .catch(error => {
+          console.log('An error occurred:', error);
+        });
+    },
     
   },
   modules: {
