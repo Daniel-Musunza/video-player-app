@@ -44,15 +44,15 @@
       <div class="col1">
      
           <div class="video-player">
-            <video ref="video" class="video" v-if="currentVideo" :src="currentVideo.url" autoplay loop controls></video>
-            <div class="controls">
+            <video ref="video" class="video" v-if="currentVideo" :src="currentVideo.url" autoplay loop controls type="video/mp4,video/mkv,video/mp3"></video>
+            <!-- <div class="controls">
               <button class="play-btn" v-if="!$refs.video?.paused" @click.prevent="$refs.video?.pause()">Cool</button>
               <button class="pause-btn" v-else @click.prevent="$refs.video?.play()"></button>
               <div class="progress-bar" @click="seek">
                 <div class="progress" :style="{ width: progress + '%' }"></div>
               </div>
               <div class="time">{{ currentTime }} / {{ duration }}</div>
-            </div>
+            </div> -->
           <!-- Add video form -->
      
         </div>
@@ -63,7 +63,7 @@
         <div class="video-list">
           <div v-for="video in videoList" :key="video.url" class="video-item" @click="playVideo(video)">
             <div class="thumbnail"> 
-              <video :src="video.url" loop autoplay muted></video>
+              <video :src="video.url" loop autoplay muted type="video/mp4,video/mkv,video/mp3"></video>
             </div>
             <div class="details">
               <div class="title">{{ video.title }}</div>
@@ -165,24 +165,24 @@ export default {
         };
         this.$store.commit('setVideoList', [...this.videoList, newData]);
             // Send the new data to the server
-            fetch('http://localhost:3000/addData', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newData)
-            })
-            .then(response => {
-                if (response.ok) {
-                console.log('Video Added successfully!');
-                this.file = null;
-                } else {
-                console.log('Failed add video to data.json');
-                }
-            })
-            .catch(error => {
-                console.log('An error occurred:', error);
-            });
+            // fetch('http://localhost:3000/addData', {
+            // method: 'POST',
+            // headers: {
+            //     'Content-Type': 'application/json'
+            // },
+            // body: JSON.stringify(newData)
+            // })
+            // .then(response => {
+            //     if (response.ok) {
+            //     console.log('Video Added successfully!');
+            //     this.file = null;
+            //     } else {
+            //     console.log('Failed add video to data.json');
+            //     }
+            // })
+            // .catch(error => {
+            //     console.log('An error occurred:', error);
+            // });
         this.file = null;
     },
     addVideo() {
