@@ -45,15 +45,7 @@
      
           <div class="video-player">
             <video ref="video" class="video" v-if="currentVideo" :src="currentVideo.url" autoplay loop controls type="video/mp4,video/mkv,video/mp3"></video>
-            <!-- <div class="controls">
-              <button class="play-btn" v-if="!$refs.video?.paused" @click.prevent="$refs.video?.pause()">Cool</button>
-              <button class="pause-btn" v-else @click.prevent="$refs.video?.play()"></button>
-              <div class="progress-bar" @click="seek">
-                <div class="progress" :style="{ width: progress + '%' }"></div>
-              </div>
-              <div class="time">{{ currentTime }} / {{ duration }}</div>
-            </div> -->
-          <!-- Add video form -->
+          
      
         </div>
       </div>
