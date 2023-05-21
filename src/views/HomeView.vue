@@ -2,15 +2,10 @@
    <!-- Video player -->
   <div class="container-fluid">
       <header>
-        <div>
-        
-        </div>
-        <form>
           
-            <input @change="handleFileUpload" class="input" name="arquivo" id="arquivo" type="file"/>
-            <input placeholder="URL" v-model="url" class="input" name="text" type="text"/>
-            <button @click.prevent="addVideo()" class="btn" type="button">
-                <strong>Add</strong>
+        <div class="open"  @click="toggleOpenMenu">
+              <button class="btn" type="button">
+                <strong>New</strong>
                 <div id="container-stars">
                     <div id="stars"></div>
                 </div>
@@ -20,8 +15,27 @@
                     <div class="circle"></div>
                 </div>
               </button>
+            </div>
+          <div v-if="openMenu" class="open-menu">
+              <form>
+            
+                <input @change="handleFileUpload" class="input" name="arquivo" id="arquivo" type="file"/>
+                <input placeholder="URL" v-model="url" class="input" name="text" type="text"/>
+                <button @click.prevent="addVideo()" class="btn" type="button">
+                    <strong>Add</strong>
+                    <div id="container-stars">
+                        <div id="stars"></div>
+                    </div>
 
-          </form>
+                    <div id="glow">
+                        <div class="circle"></div>
+                        <div class="circle"></div>
+                    </div>
+                </button>
+
+               </form>
+          </div>
+     
          
             <div class="profile"  @click="toggleProfileMenu">
               <button class="btn" type="button">
@@ -75,9 +89,6 @@
         </div>
       </div>
     </div>
-    <div class="form">
-      <input @change="handleFileUpload" class="inpdddut" name="arquivo" id="arquivo" type="file">
-   </div>
   </div>
  
 </template>
@@ -88,6 +99,7 @@ export default {
   data(){
     return {
       profileMenu: null,
+      openMenu: null,
       currentIndex: 0,
     }
   },
@@ -107,6 +119,9 @@ export default {
   methods: {
     toggleProfileMenu(){
       this.profileMenu =!this.profileMenu
+    },
+    toggleOpenMenu(){
+      this.openMenu =!this.openMenu
     },
     ...mapActions(['getVideoList']),
     // Method to handle file upload on selecting a video file
@@ -416,7 +431,12 @@ strong {
 form {
   border-radius: 5px;
   display: flex;
+  flex-direction: column;
   width: auto;
+  justify-content: center;
+}
+.open{
+  margin-left: 20px;
 }
 .input[type="file"] {
   margin: 10px;
@@ -566,6 +586,16 @@ form {
     background-color: #232222;
     box-shadow: 0 4px 0px -1px #ffffff;
   }
+  .open-menu {
+    position: absolute;
+    border-radius: 10px;
+   color: #fff;
+    top: 60px;
+    left: 0; 
+    width: 270px;
+    background-color: #232222;
+    box-shadow: 0 4px 0px -1px #ffffff;
+  }
   a{
   text-decoration: none;
   }
@@ -612,18 +642,10 @@ header label span {
        width: calc(100% -70px);
        left: 70px;
      }
-     .form{
-      display:none;
-    }
+ 
 
 }
 
-@media only screen and (min-width:800px){
-  .form{
-  display:none;
-  }
-
-}
 
  @media only screen and (max-width: 768px) {
   
@@ -662,17 +684,8 @@ header label span {
         left: 0 !important;
         
     }
-    form{
-      display: none;
-    }
-    .form{
-      display:flex;
-      justify-content: center;
-      margin-left: 18px;
-    position: fixed;
-      bottom: 0;
-
-    }
+   
+    
 .row {
   display: flex;
   flex-direction: column;
