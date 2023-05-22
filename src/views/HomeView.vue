@@ -68,9 +68,8 @@
       <div class="col1">
      
           <div class="video-player">
-            <video ref="video" class="video" v-if="currentVideo" :src="currentVideo.url" autoplay loop controls ></video>
-           
-     
+            <video ref="video" @ended="videoEnded" class="video" v-if="currentVideo" :src="currentVideo.url" autoplay loop controls ></video>
+            <!-- <iframe width="887" height="499" src="https://www.youtube.com/embed/iYIQ-WipkNo" title="AFRICAN HOME: THE KING" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>      -->
         </div>
       </div>
 
@@ -157,32 +156,14 @@ export default {
         this.file = null;
     },
     addVideo() {
-      // Set the selected file as the current file
       const newData = {
-          title: this.url,
-          url: this.url,
-        };
-        this.$store.commit('setVideoList', [...this.videoList, newData]);
-            // Send the new data to the server
-            fetch('http://localhost:3000/addData', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newData)
-            })
-            .then(response => {
-                if (response.ok) {
-                console.log('Video Added successfully!');
-                this.file = null;
-                } else {
-                console.log('Failed add video to data.json');
-                }
-            })
-            .catch(error => {
-                console.log('An error occurred:', error);
-            });
-       
+        title: this.url,
+        url: this.url,
+        file: this.url, // Add this line to set the file property
+      };
+      this.$store.commit('setVideoList', [...this.videoList, newData]);
+      this.playVideo(newData);
+      // Rest of the code...
     },
     // Method to add a new video to the video list
 
@@ -199,7 +180,7 @@ export default {
         return;
       }
 
-      if (video.file instanceof Blob) {
+      if (video.file) {
         this.$store.commit('setCurrentVideo', video);
       } else {
         this.$store.commit('setCurrentVideo', video);
