@@ -1,180 +1,172 @@
 <template>
-   <!-- Video player -->
-  <div class="container-fluid">
-      <header>
-          
-        <div class="open"  @click="toggleOpenMenu">
-              <button class="btn" type="button">
-                <strong>New</strong>
-                <div id="container-stars">
-                    <div id="stars"></div>
-                </div>
-
-                <div id="glow">
-                    <div class="circle"></div>
-                    <div class="circle"></div>
-                </div>
-              </button>
-            </div>
-          <div v-if="openMenu" class="open-menu">
-              <form>
-            
-                <input @change="handleFileUpload" class="input" name="arquivo" id="arquivo" type="file"/>
-                <input placeholder="URL" v-model="url" class="input" name="text" type="text"/>
-                <button @click.prevent="addVideo()" class="btn" type="button">
-                    <strong>Add</strong>
-                    <div id="container-stars">
-                        <div id="stars"></div>
-                    </div>
-
-                    <div id="glow">
-                        <div class="circle"></div>
-                        <div class="circle"></div>
-                    </div>
-                </button>
-
-               </form>
-          </div>
-     
+  <!-- Video player -->
+ <div class="container-fluid">
+     <header>
          
-            <div class="profile"  @click="toggleProfileMenu">
-              <button class="btn" type="button">
-                <strong>Cool</strong>
-                <div id="container-stars">
-                    <div id="stars"></div>
-                </div>
+       <div class="open"  @click="toggleOpenMenu">
+             <button class="btn" type="button">
+               <strong>New</strong>
+               <div id="container-stars">
+                   <div id="stars"></div>
+               </div>
 
-                <div id="glow">
-                    <div class="circle"></div>
-                    <div class="circle"></div>
-                </div>
-              </button>
-            </div>
-          
-          <div v-if="profileMenu " class="profile-menu">
-            <div class="info">
-              <div class="right">
-                <h4>Musunza Festus</h4>
-                <small>Developer</small>
-                <hr>
-     
-               
-                <a href="https://musunzaportfolio.web.app"><i class="fa-regular fa-user" ></i>View Profile</a>                
-              </div>
-            </div>
-          </div> 
-      </header>
-    <div class="row">
-      <div class="col1">
-     
-          <div class="video-player">
-            <video ref="video" @ended="videoEnded" class="video" v-if="currentVideo" :src="currentVideo.url" autoplay loop controls ></video>
-            <!-- <iframe width="887" height="499" src="https://www.youtube.com/embed/iYIQ-WipkNo" title="AFRICAN HOME: THE KING" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>      -->
-        </div>
-      </div>
+               <div id="glow">
+                   <div class="circle"></div>
+                   <div class="circle"></div>
+               </div>
+             </button>
+           </div>
+         <div v-if="openMenu" class="open-menu">
+             <form>
+           
+               <input @change="handleFileUpload" class="input" name="arquivo" id="arquivo" type="file"/>
+               <input placeholder="URL" v-model="url" class="input" name="text" type="text"/>
+               <button @click.prevent="addVideo()" class="btn" type="button">
+                   <strong>Add</strong>
+                   <div id="container-stars">
+                       <div id="stars"></div>
+                   </div>
 
-      <!-- Video list -->
-      <div class="col2">
-        <div class="video-list">
-          <div v-for="video in videoList" :key="video.url" class="video-item" @click="playVideo(video)">
-            <div class="thumbnail"> 
-              <video :src="video.url" loop autoplay muted ></video>
-            </div>
-            <div class="details">
-              <div class="title">{{ video.title }}</div>
-             
-            </div>
+                   <div id="glow">
+                       <div class="circle"></div>
+                       <div class="circle"></div>
+                   </div>
+               </button>
+
+              </form>
+         </div>
+    
+        
+           <div class="profile"  @click="toggleProfileMenu">
+             <button class="btn" type="button">
+               <strong>Cool</strong>
+               <div id="container-stars">
+                   <div id="stars"></div>
+               </div>
+
+               <div id="glow">
+                   <div class="circle"></div>
+                   <div class="circle"></div>
+               </div>
+             </button>
+           </div>
+         
+         <div v-if="profileMenu " class="profile-menu">
+           <div class="info">
+             <div class="right">
+               <h4>Musunza Festus</h4>
+               <small>Developer</small>
+               <hr>
+    
+              
+               <a href="https://musunzaportfolio.web.app"><i class="fa-regular fa-user" ></i>View Profile</a>                
+             </div>
+           </div>
+         </div> 
+     </header>
+   <div class="row">
+     <div class="col1">
+    
+       <div class="video-player">
+         <video ref="video" @ended="videoEnded" preload="none" class="video" v-if="currentVideo" :src="currentVideo.url" autoplay loop controls></video>
+       </div>
+     </div>
+
+     <!-- Video list -->
+    <!-- Video list -->
+    <div class="col2">
+      <div class="video-list">
+        <div v-for="video in videoList" :key="video.url" class="video-item">
+          <div class="thumbnail" @click="playVideo(video)">
+            <video :src="video.url" loop autoplay muted></video>
+          </div>
+          <div class="details">
+            <div class="title">{{ video.title }}</div>
           </div>
         </div>
       </div>
     </div>
-  </div>
- 
+
+   </div>
+ </div>
+
 </template>
 <script>
 import { mapState, mapActions } from 'vuex';
+
 export default {
   name: 'HomeView',
-  data(){
+  data() {
     return {
       profileMenu: null,
       openMenu: null,
-      currentIndex: 0,
-    }
+    };
   },
   computed: {
-    // Get the current video and video list from Vuex store
+    ...mapState(['videoList']),
     currentVideo() {
-      return this.$store.state.currentVideo
+      return this.$store.state.currentVideo;
     },
     isPlaying() {
-      return !this.$refs.video.paused
+      return !this.$refs.video.paused;
     },
-    ...mapState(['videoList']),
-
- 
   },
-  // Defining various methods used in the component
   methods: {
-    toggleProfileMenu(){
-      this.profileMenu =!this.profileMenu
+    toggleProfileMenu() {
+      this.profileMenu = !this.profileMenu;
     },
-    toggleOpenMenu(){
-      this.openMenu =!this.openMenu
+    toggleOpenMenu() {
+      this.openMenu = !this.openMenu;
     },
     ...mapActions(['getVideoList']),
-    // Method to handle file upload on selecting a video file
     handleFileUpload(event) {
-      // Set the selected file as the current file
       this.file = event.target.files[0];
       const newData = {
-          title: this.file.name,
-          file: this.file,
-          url: URL.createObjectURL(this.file),
-        };
-        this.$store.commit('setVideoList', [...this.videoList, newData]);
-        this.playVideo(newData);
-            // Send the new data to the server
-            fetch('http://localhost:3000/addData', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newData)
-            })
-            .then(response => {
-                if (response.ok) {
-                console.log('Video Added successfully!');
-                this.file = null;
-                } else {
-                console.log('Failed add video to data.json');
-                }
-            })
-            .catch(error => {
-                console.log('An error occurred:', error);
-            });
-        this.file = null;
+        title: this.file.name,
+        file: this.file,
+        url: URL.createObjectURL(this.file),
+      };
+      this.$store.commit('setVideoList', [...this.videoList, newData]);
+      this.playVideo(newData);
+      fetch('http://localhost:3000/addData', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newData),
+      })
+        .then(response => {
+          if (response.ok) {
+            console.log('Video added successfully!');
+            this.file = null;
+            this.playVideo(newData);
+          } else {
+            console.log('Failed to add video to data.json');
+          }
+        })
+        .catch(error => {
+          console.log('An error occurred:', error);
+        });
+      this.file = null;
     },
     addVideo() {
       const newData = {
         title: this.url,
         url: this.url,
-        file: this.url, // Add this line to set the file property
+        file: this.url,
       };
       this.$store.commit('setVideoList', [...this.videoList, newData]);
       this.playVideo(newData);
       // Rest of the code...
     },
-    // Method to add a new video to the video list
-
     togglePlay() {
+      const videoElement = this.$refs.video;
       if (this.isPlaying) {
-        this.$refs.video.pause()
+        videoElement.pause();
       } else {
-        this.$refs.video.play()
+        videoElement.play();
       }
     },
-    // Method to play a video
     playVideo(video) {
       if (!video) {
         return;
@@ -183,28 +175,38 @@ export default {
       if (video.file) {
         this.$store.commit('setCurrentVideo', video);
       } else {
-        this.$store.commit('setCurrentVideo', video);
+        const newVideo = {
+          ...video,
+          file: video.url,
+        };
+        this.$store.commit('setCurrentVideo', newVideo);
       }
-  },
+    },
 
-   
     videoEnded() {
-      const currentIndex = this.videoList.findIndex(video => video.url === this.currentVideo.url)
-      const nextIndex = (currentIndex + 1) % this.videoList.length
-      const nextVideo = this.videoList[nextIndex]
-      this.$store.commit('setCurrentVideo', nextVideo)
-      this.$refs.video.load()
-      this.$refs.video.play()
+      const currentIndex = this.videoList.findIndex(video => video.url === this.currentVideo.url);
+      const nextIndex = (currentIndex + 1) % this.videoList.length;
+      const nextVideo = this.videoList[nextIndex];
+      this.playVideo(nextVideo);
     },
   },
-  created() {
-  this.getVideoList();
-},
-
-
-}
-
+  mounted() {
+    this.getVideoList();
+    const videoElement = this.$refs.video;
+    if (videoElement) {
+      videoElement.addEventListener('ended', this.videoEnded);
+    }
+  },
+  beforeUnmount() {
+    const videoElement = this.$refs.video;
+    if (videoElement) {
+      videoElement.removeEventListener('ended', this.videoEnded);
+    }
+  },
+};
 </script>
+
+
 <style scoped>
 .btn {
   margin:10px;
