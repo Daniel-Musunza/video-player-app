@@ -20,6 +20,7 @@
              <form>
            
                <input @change="handleFileUpload" class="input" name="arquivo" id="arquivo" type="file"/>
+               <input @change="handleFolderUpload" class="input" name="arquivo" id="arquivo" type="file" multiple directory webkitdirectory/>
                <input placeholder="URL" v-model="url" class="input" name="text" type="text"/>
                <button @click.prevent="addVideo()" class="btn" type="button">
                    <strong>Add</strong>
@@ -66,10 +67,12 @@
      </header>
    <div class="row">
      <div class="col1">
-    
-       <div class="video-player">
-         <video ref="video" @ended="videoEnded" preload="none" class="video" v-if="currentVideo" :src="currentVideo.url" autoplay loop controls></video>
-       </div>
+       <div v-if="currentVideo">
+        <div class="video-player" >
+          <video ref="video" @ended="videoEnded" preload="none" class="video" :src="currentVideo.url" autoplay controls></video>
+        </div>
+        <div class="title" style="color: aliceblue; margin-top: 0;">{{ currentVideo.title }}</div>
+      </div>
      </div>
 
      <!-- Video list -->
@@ -86,6 +89,7 @@
         </div>
       </div>
     </div>
+
 
    </div>
  </div>
@@ -149,6 +153,34 @@ export default {
         });
       this.file = null;
     },
+    handleFolderUpload(event) {
+    const files = event.target.files;
+    const folderFiles = [];
+    
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      
+      // Check if the file is a video file (you can modify this check as per your requirements)
+      if (file.type.startsWith('video/')) {
+        const newData = {
+          title: file.name,
+          file: file,
+          url: URL.createObjectURL(file),
+        };
+        folderFiles.push(newData);
+      }
+    }
+    
+    if (folderFiles.length > 0) {
+      this.$store.commit('setVideoList', [...this.videoList, ...folderFiles]);
+      this.playVideo(folderFiles[0]);
+      
+      // Process and upload folderFiles as needed
+      
+      // Rest of the code...
+    }
+  },
+
     addVideo() {
       const newData = {
         title: this.url,
