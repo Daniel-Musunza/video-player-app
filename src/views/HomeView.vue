@@ -41,19 +41,6 @@
                 style="display: none;"
               />
 
-               <input placeholder="URL" v-model="url" class="input" name="text" type="text"/>
-               <button @click.prevent="addVideo()" class="btn" type="button">
-                   <strong>Add</strong>
-                   <div id="container-stars">
-                       <div id="stars"></div>
-                   </div>
-
-                   <div id="glow">
-                       <div class="circle"></div>
-                       <div class="circle"></div>
-                   </div>
-               </button>
-
               </form>
          </div>
     
@@ -204,16 +191,6 @@ export default {
     this.openMenu = null;
   },
 
-    addVideo() {
-      const newData = {
-        title: this.url,
-        url: this.url,
-        file: this.url,
-      };
-      this.$store.commit('setVideoList', [...this.videoList, newData]);
-      this.playVideo(newData);
-      // Rest of the code...
-    },
     togglePlay() {
       const videoElement = this.$refs.video;
       if (this.isPlaying) {
@@ -458,6 +435,7 @@ strong {
   justify-content: space-between;
   flex-direction: row;
   width: 100%;
+  min-height: 600px;
 }
 .col1{
   width:70%;
