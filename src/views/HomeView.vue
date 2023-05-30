@@ -66,7 +66,6 @@
                <small>Developer</small>
                <hr>
     
-              
                <a href="https://musunzaportfolio.web.app"><i class="fa-regular fa-user" ></i>View Profile</a>                
              </div>
            </div>
