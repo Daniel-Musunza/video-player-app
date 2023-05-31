@@ -81,7 +81,6 @@
       </div>
      </div>
 
-     <!-- Video list -->
     <!-- Video list -->
     <div class="col2">
       <div class="video-list">
