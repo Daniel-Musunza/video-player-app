@@ -232,10 +232,7 @@ export default {
   },
 };
 </script>
-
-
 <style scoped>
-
 .btn {
   margin:10px;
   right: 20px;
