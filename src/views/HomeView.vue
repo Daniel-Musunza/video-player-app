@@ -94,15 +94,12 @@
         </div>
       </div>
     </div>
-
-
    </div>
  </div>
 
 </template>
 <script>
 import { mapState, mapActions } from 'vuex';
-
 export default {
   name: 'HomeView',
   data() {
