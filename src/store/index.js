@@ -28,10 +28,7 @@ export default createStore({
         .catch(error => {
           console.log('An error occurred:', error);
         });
-    },
-    
+    }, 
   },
-  modules: {
-  }
 })
 
