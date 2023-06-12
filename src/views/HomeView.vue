@@ -432,6 +432,7 @@ strong {
 .col1{
   width:70%;
   box-shadow: 2px 2px 7px rgba(0,0,0, 0.2);
+  background-color: #7b7b7b;
 }
 .col2{
   box-shadow: 2px 2px 7px rgba(0,0,0, 0.2);
