@@ -73,11 +73,11 @@
      </header>
    <div class="row">
      <div class="col1">
-       <div v-if="currentVideo">
+       <div v-if="currentVideo" style="margin-top: 10px;">
         <div class="video-player" >
           <video ref="video" @ended="videoEnded" preload="none" class="video" :src="currentVideo.url" autoplay controls></video>
         </div>
-        <div class="title" style="color: aliceblue; margin-top: 0;">{{ currentVideo.title }}</div>
+        <div class="title" style="color: rgb(7, 7, 7); margin-top: -10px;">{{ currentVideo.title }}</div>
       </div>
      </div>
 
@@ -433,6 +433,7 @@ strong {
   width:70%;
   box-shadow: 2px 2px 7px rgba(0,0,0, 0.2);
   background-color: #7b7b7b;
+  padding-left: 10px;
 }
 .col2{
   box-shadow: 2px 2px 7px rgba(0,0,0, 0.2);
