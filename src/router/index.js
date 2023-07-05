@@ -7,7 +7,6 @@ const routes = [
     component: HomeView
   },
 ]
-
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
