@@ -73,11 +73,11 @@
      </header>
    <div class="row">
      <div class="col1">
-       <div v-if="currentVideo" style="margin-top: 10px;">
+       <div v-if="currentVideo" style="margin-top: 10px; margin-right: 10px; border-radius: 10px;">
         <div class="video-player" >
           <video ref="video" @ended="videoEnded" preload="none" class="video" :src="currentVideo.url" autoplay controls></video>
         </div>
-        <div class="title" style="color: rgb(7, 7, 7); margin-top: -10px;">{{ currentVideo.title }}</div>
+        <div class="title" style="color: rgb(7, 7, 7); margin-top: -18px;">{{ currentVideo.title }}</div>
       </div>
      </div>
 
@@ -427,12 +427,13 @@ strong {
   justify-content: space-between;
   flex-direction: row;
   width: 100%;
-  min-height: 600px;
+  height: 625px;
 }
 .col1{
   width:70%;
   box-shadow: 2px 2px 7px rgba(0,0,0, 0.2);
   background-color: #7b7b7b;
+  border-radius: 10px;
   padding-left: 10px;
 }
 .col2{
@@ -487,6 +488,7 @@ label{
     width: 100%;
     padding-top: 56.25%; /* 16:9 aspect ratio */
     margin-bottom: 20px;
+    align-items: center;
   }
   .video {
     position: absolute;
@@ -495,6 +497,7 @@ label{
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 10px;
   }
 .controls {
   position: absolute;
