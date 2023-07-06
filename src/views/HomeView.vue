@@ -79,6 +79,11 @@
         </div>
         <div class="title" style="color: rgb(7, 7, 7); margin-top: -18px;">{{ currentVideo.title }}</div>
       </div>
+      <div v-if="!currentVideo" style="margin-top: 10px; margin-right: 10px; border-radius: 10px;">
+        <div class="video-player" >
+          <iframe src="https://www.youtube.com/embed/17ntdUP5-Do?autoplay=1" title="Stunning Colors of Nature in 4K HDR - Beautiful Tropical Animals and Relaxing Music" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+      </div>
      </div>
 
     <!-- Video list -->
@@ -427,7 +432,8 @@ strong {
   justify-content: space-between;
   flex-direction: row;
   width: 100%;
-  height: 625px;
+  /* height: 625px; */
+  min-height: auto;
 }
 .col1{
   width:70%;
@@ -490,14 +496,14 @@ label{
     margin-bottom: 20px;
     align-items: center;
   }
-  .video {
+  .video, iframe {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 10px;
+    border-radius: 5px;
   }
 .controls {
   position: absolute;
