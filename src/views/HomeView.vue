@@ -81,7 +81,7 @@
       </div>
       <div v-if="!currentVideo" style="margin-top: 10px; margin-right: 10px; border-radius: 10px;">
         <div class="video-player" >
-          <iframe src="https://www.youtube.com/embed/17ntdUP5-Do?autoplay=1" title="Stunning Colors of Nature in 4K HDR - Beautiful Tropical Animals and Relaxing Music" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          <video preload="none" class="video" src="currentVideo.url" autoplay controls></video>
         </div>
       </div>
      </div>
