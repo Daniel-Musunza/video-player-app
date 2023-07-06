@@ -81,7 +81,7 @@
       </div>
       <div v-if="!currentVideo" style="margin-top: 10px; margin-right: 10px; border-radius: 10px;">
         <div class="video-player" >
-          <video preload="none" class="video" src="currentVideo.url" autoplay controls></video>
+          <video preload="none" class="video" src="@/assets/default-video_Trim.mp4" autoplay controls></video>
         </div>
       </div>
      </div>
