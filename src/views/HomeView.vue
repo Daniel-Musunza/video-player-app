@@ -43,8 +43,6 @@
 
               </form>
          </div>
-    
-        
            <div class="profile"  @click="toggleProfileMenu">
              <button class="btn" type="button">
                <strong>Cool</strong>
