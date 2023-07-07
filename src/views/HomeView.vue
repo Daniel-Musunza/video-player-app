@@ -79,9 +79,9 @@
         </div>
         <div class="title" style="color: rgb(7, 7, 7); margin-top: -18px;">{{ currentVideo.title }}</div>
       </div>
-      <div v-if="!currentVideo" style="margin-top: 10px; margin-right: 10px; border-radius: 10px;">
+      <div v-if="!currentVideo" style="margin-top: 10px; border-radius: 10px;">
         <div class="video-player" >
-          <video preload="none" class="video" src="@/assets/default-video_Trim.mp4" autoplay controls></video>
+          <video class="video" src="https://github.com/Daniel-Musunza/video-player-app/blob/master/src/assets/default-video_Trim.mp4" autoplay controls></video>
         </div>
       </div>
      </div>
@@ -412,7 +412,7 @@ strong {
   color: #000;
   height: 100%;
   width: 100%;
-  overflow: hidden;
+  overflow: none;
 }
 .container-fluid header{
   display: flex;
@@ -433,7 +433,8 @@ strong {
   flex-direction: row;
   width: 100%;
   /* height: 625px; */
-  min-height: auto;
+  height: auto;
+  overflow-y: none;
 }
 .col1{
   width:70%;
