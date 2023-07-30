@@ -431,8 +431,8 @@ strong {
   flex-direction: row;
   width: 100%;
   /* height: 625px; */
-  height: auto;
-  overflow-y: none;
+  height: 100%;
+  overflow: none;
 }
 .col1{
   width:70%;
