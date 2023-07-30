@@ -79,7 +79,7 @@
       </div>
       <div v-if="!currentVideo" style="margin-top: 10px; border-radius: 10px;">
         <div class="video-player" >
-          <video class="video" src="https://github.com/Daniel-Musunza/video-player-app/blob/master/src/assets/default-video_Trim.mp4" autoplay controls></video>
+          <video class="video" src="@/assets/default-video_Trim.mp4" autoplay controls></video>
         </div>
       </div>
      </div>
