@@ -71,7 +71,7 @@
      </header>
    <div class="row">
      <div class="col1">
-       <div v-if="currentVideo" style="margin-top: 10px; margin-right: 10px; border-radius: 10px;">
+       <div v-if="currentVideo" style="margin-top: 10px;  border-radius: 10px;">
         <div class="video-player" >
           <video ref="video" @ended="videoEnded" preload="none" class="video" :src="currentVideo.url" autoplay controls></video>
         </div>
@@ -716,28 +716,34 @@ header label span {
 .row {
   display: flex;
   flex-direction: column;
-  
-  margin: 0;
+  width: 100%;
+  margin-top: 80px;
+  margin-right: 0;
 }
 .col1{
- display: none;
+  width:100%;
+  box-shadow: 2px 2px 7px rgba(0,0,0, 0.2);
+  background-color: #7b7b7b;
+  border-radius: 10px;
+  right: 0;
+  position: fixed;
+  height: fit-content;
 }
 .col2{
   width:100%;
-right: 0;
+  position: fixed;
+  margin-top: 270px;
+  margin-right:0;
 }
 
     #nav-toggle:checked ~ .main-content {
         margin-left: 0rem !important;
     }
   .video-list{
-    height: auto;
-    margin-top: 73px;;
+    margin: 0;
   }
   .video-item {
-    position: relative;
-    height: 675px;
-    cursor:grab;
+    
    
 
   }
