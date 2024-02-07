@@ -64,7 +64,7 @@
                <small>Developer</small>
                <hr>
     
-               <a href="https://musunzaportfolio.web.app"><i class="fa-regular fa-user" ></i>View Profile</a>                
+               <a href="https://musunzafestus.vercel.app"><i class="fa-regular fa-user" ></i>View Profile</a>                
              </div>
            </div>
          </div> 
@@ -236,6 +236,7 @@ export default {
 };
 </script>
 <style scoped>
+
 .btn {
   margin:10px;
   right: 20px;
